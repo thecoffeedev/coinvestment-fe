@@ -1,0 +1,48 @@
+.ctm_container {
+  width: 100vw;
+  max-height: 100vh;
+  /* max-height: 100vh; */
+}
+
+.title-coin {
+  font-size: 2.4rem;
+  background: linear-gradient(to right, #07033c, #53565e);
+  background: -webkit-linear-gradient(to right, #07033c, #53565e);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login_cont {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login_col {
+  height: 70vh;
+  justify-content: space-between;
+}
+
+.image_col {
+  justify-content: center;
+}
+
+@media screen and (max-width: 870px) {
+  .image_col {
+    display: none !important;
+  }
+  .login_col {
+    width: 100% !important;
+  }
+  .login_cont {
+    width: 70% !important;
+  }
+}
+
+@media screen and (max-width: 512px) {
+  .login_cont {
+    width: 100% !important;
+  }
+}
