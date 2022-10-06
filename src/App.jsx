@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Dashboard from "./pages/Dashboard";
-=======
-import { ToastContainer } from "react-toastify";
-import Cryptos from "./pages/Dashboard/Cryptos";
->>>>>>> Stashed changes
+import Crypto from "./pages/Dashboard/Crypto";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -19,7 +15,7 @@ function App() {
         <Router>
           <Routes>
             <Route element={<PrivateRoutes />}>
-              <Route element={<Cryptos />} path="/db/crypto" />
+              <Route element={<Crypto />} path="/db/crypto" />
             </Route>
             <Route element={<Landing />} path="/" exact />
             <Route element={<Login />} path="/login" />
