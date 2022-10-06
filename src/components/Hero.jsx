@@ -3,7 +3,7 @@ import macImg from "../assets/Macbook-Pro.png";
 
 const Hero = () => {
   return (
-    <div className=" h-screen w-screen px-4 py-8 text-[#E6E6E6] bg-[#50f]">
+    <div className=" h-screen w-screen px-4 py-8 text-primaryLight bg-[#50f]">
       <div className="max-w-5xl h-full mx-auto ">
         <div className="flex h-fit justify-between w-full px-2">
           <h1 className="text-2xl font-medium tracking-wide">COINVESTMENT</h1>
@@ -20,6 +20,7 @@ const Hero = () => {
             <a className="opacity-60 hover:opacity-100" href="/">
               <p>Resources</p>
             </a>
+            <button className="border border-white px-3 rounded-md hover:bg-white hover:bg-opacity-10 shadow-xl hover:shadow-none py-1">Login</button>
           </div>
         </div>
         <div className="flex justify-center items-center h-[60%]">
