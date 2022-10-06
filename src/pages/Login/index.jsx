@@ -22,7 +22,7 @@ function Login() {
         email: res.data.emailAddress,
       });
       localStorage.setItem("$AUTH_TOKEN", res.data.token);
-      navigate("/db");
+      navigate("/db/crypto");
     });
   };
 

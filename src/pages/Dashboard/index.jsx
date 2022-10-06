@@ -1,11 +1,14 @@
 import React from "react";
 import Header from "../../components/Header";
+import Tabs from "../../components/Tabs";
+import Wrapper from "../../components/Wrapper";
 
-function Dashboard() {
+function Dashboard({ children }) {
   return (
-    <div>
+    <div className="w-full">
       <Header />
-      Dashboard
+      <Tabs />
+      <Wrapper>{children}</Wrapper>
     </div>
   );
 }
