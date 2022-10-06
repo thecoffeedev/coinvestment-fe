@@ -1,10 +1,29 @@
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { userSignIn } from "../../apis/user";
 import PageCover from "../../assets/login-cover.png";
 import Logo from "../../assets/logo.svg";
+import { UserContext } from "../../utils/UserContext";
 import "./index.css";
 
 function Login() {
   const navigate = useNavigate();
+  const userContext = useContext(UserContext);
+  const [contextUser, setContextUser] = userContext;
+
+  const [user, setUser] = useState({ emailAddress: "", password: "" });
+
+  const handleSubmit = (user) => {
+    userSignIn(user).then((res) => {
+      setContextUser({
+        ...contextUser,
+        authToken: res.data.token,
+        username: res.data.name,
+        email: res.data.emailAddress,
+      });
+      localStorage.setItem("$AUTH_TOKEN", res.data.token);
+    });
+  };
 
   return (
     <div className="ctm_container py-4 px-6 flex justify-center mx-auto">
@@ -30,6 +49,7 @@ function Login() {
           <input
             type="email"
             placeholder="Email"
+            onChange={(e) => setUser({ ...user, emailAddress: e.target.value })}
             className="mt-1 block w-full px-3 py-2 bg-white peer border-0 border-b-2  border-primaryDark rounded-md text-sm shadow-sm placeholder-slate-400
       focus:outline-none focus:border-primaryDark focus:ring-1 focus:ring-primaryDark
       invalid:border-pink-500 invalid:text-pink-600
@@ -41,9 +61,13 @@ function Login() {
           <input
             type="password"
             placeholder="Password"
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
             className="mb-4  block w-full px-3 py-2 bg-white peer border-0 border-b-2  border-primaryDark rounded-md text-sm shadow-sm placeholder-slate-400  focus:outline-none focus:border-primaryDark focus:ring-1 focus:ring-primaryDark"
           />
-          <button className="bg-primaryDark text-primaryLight rounded-full mt-2 h-12 w-full text-xl">
+          <button
+            className="bg-primaryDark text-primaryLight rounded-full mt-2 h-12 w-full text-xl"
+            onClick={() => handleSubmit(user)}
+          >
             Login
           </button>
           <p>
