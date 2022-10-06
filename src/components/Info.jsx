@@ -1,6 +1,6 @@
 import React from 'react'
-import macImg from '/Users/shashant/Desktop/coinvestment-fe/src/assets/Macbook-Pro.png'
-import Button from '/Users/shashant/Desktop/coinvestment-fe/src/components/Button.jsx'
+import macImg from '../assets/Macbook-Pro.png'
+import Button from '../components/Button.jsx'
 
 const Info = () => {
     return (
