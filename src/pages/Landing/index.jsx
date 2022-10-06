@@ -5,6 +5,7 @@ import Buy from "../../components/Buy.jsx";
 import Hero from "../../components/Hero";
 import Info from "../../components/Info.jsx";
 import Points from "../../components/Points.jsx";
+import SupportCoins from "../../components/SupportCoins.jsx";
 
 function Landing() {
   return (
@@ -14,6 +15,7 @@ function Landing() {
       <Info />
       <Points />
       <Buy />
+      <SupportCoins />
     </div>
   );
 }
