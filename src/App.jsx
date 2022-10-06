@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-<<<<<<< Updated upstream
+import { ToastContainer } from "react-toastify";
 import Dashboard from "./pages/Dashboard";
 =======
 import { ToastContainer } from "react-toastify";
@@ -27,6 +27,7 @@ function App() {
           </Routes>
         </Router>
       </UserProvider>
+      <ToastContainer />
     </div>
   );
 }
