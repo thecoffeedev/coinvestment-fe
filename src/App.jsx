@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -12,10 +13,10 @@ function App() {
       <UserProvider>
         <Router>
           <Routes>
-            {/* <Route element={<PrivateRoutes />}> */}
-            <Route element={< Landing />} path="/" exact />
-            {/* <Route element={<Products />} path="/products" /> */}
-            {/* </Route> */}
+            <Route element={<PrivateRoutes />}>
+              <Route element={<Dashboard />} path="/db" />
+            </Route>
+            <Route element={<Landing />} path="/" exact />
             <Route element={<Login />} path="/login" />
             <Route element={<Register />} path="/register" />
           </Routes>

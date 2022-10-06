@@ -22,6 +22,7 @@ function Login() {
         email: res.data.emailAddress,
       });
       localStorage.setItem("$AUTH_TOKEN", res.data.token);
+      navigate("/db");
     });
   };
 
@@ -36,7 +37,7 @@ function Login() {
             src={Logo}
             alt="coinvestment logo"
             width="56px"
-          // className="border-primaryPurple border-2 border-opacity-60 rounded-lg"
+            // className="border-primaryPurple border-2 border-opacity-60 rounded-lg"
           />
           <h1 className="title-coin font-bold my-auto text-primaryDark">
             COINVESTMENT
