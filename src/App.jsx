@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import Account from "./pages/Dashboard/Account";
+import Bundles from "./pages/Dashboard/Bundles";
 import Crypto from "./pages/Dashboard/Crypto";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
@@ -16,6 +18,8 @@ function App() {
           <Routes>
             <Route element={<PrivateRoutes />}>
               <Route element={<Crypto />} path="/db/crypto" />
+              <Route element={<Bundles />} path="/db/bundles" />
+              <Route element={<Account />} path="/db/account" />
             </Route>
             <Route element={<Landing />} path="/" exact />
             <Route element={<Login />} path="/login" />

@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import macImg from "../assets/Macbook-Pro.png";
 
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <div className=" h-screen w-screen px-4 py-8 text-primaryLight bg-[#50f]">
       <div className="max-w-5xl h-full mx-auto ">
@@ -20,7 +22,12 @@ const Hero = () => {
             <a className="opacity-60 hover:opacity-100" href="/">
               <p>Resources</p>
             </a>
-            <button className="border border-white px-3 rounded-md hover:bg-white hover:bg-opacity-10 shadow-xl hover:shadow-none py-1">Login</button>
+            <button
+              className="border border-white px-3 rounded-md hover:bg-white hover:bg-opacity-10 shadow-xl hover:shadow-none py-1"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </button>
           </div>
         </div>
         <div className="flex justify-center items-center h-[60%]">

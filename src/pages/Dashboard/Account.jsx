@@ -1,9 +1,10 @@
 import React from "react";
+import Dashboard from ".";
 
 function Account() {
   // const []
 
-  return <div>Account</div>;
+  return <Dashboard>Account</Dashboard>;
 }
 
 export default Account;
