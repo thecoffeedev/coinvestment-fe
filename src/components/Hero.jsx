@@ -10,16 +10,16 @@ const Hero = () => {
         <div className="flex h-fit justify-between w-full px-2">
           <h1 className="text-2xl font-medium tracking-wide">COINVESTMENT</h1>
           <div className="flex font-extralight items-center text-[1rem] space-x-8">
-            <a className="opacity-60 hover:opacity-100" href="/">
+            <a className="opacity-80 hover:opacity-100" href="/">
               <p>Available Bundle</p>
             </a>
-            <a className="opacity-60 hover:opacity-100" href="/">
+            <a className="opacity-80 hover:opacity-100" href="/">
               <p>Why Coinvestment</p>
             </a>
-            <a className="opacity-60 hover:opacity-100" href="/">
+            <a className="opacity-80 hover:opacity-100" href="/">
               <p>FAQ</p>
             </a>
-            <a className="opacity-60 hover:opacity-100" href="/">
+            <a className="opacity-80 hover:opacity-100" href="/">
               <p>Resources</p>
             </a>
             <button
