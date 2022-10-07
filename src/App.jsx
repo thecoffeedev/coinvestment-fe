@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Account from "./pages/Dashboard/Account";
 import Bundles from "./pages/Dashboard/Bundles";
-import Coin from "./components/Coin";
+import Coin from "./Pages/Dashboard/Coin";
 import Crypto from "./pages/Dashboard/Crypto";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
