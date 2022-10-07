@@ -38,12 +38,12 @@ const Coin = (props) => {
                 <img src={coin.image.small} alt={coin.name} />
               ) : null}
               <p className="p-3 font-bold uppercase ">{coin.name}</p>
-              <p className="py-3 uppercase">({coin.symbol}/INR)</p>
+              <p className="py-3 uppercase">({coin.symbol}/GBP)</p>
             </div>
             <div className="flex justify-center sm:justify-end">
               {coin.market_data ? (
                 <h1 className="text-5xl font-medium w-fit">
-                  &#8377;{coin.market_data.current_price.inr.toLocaleString()}
+                  &pound;{coin.market_data.current_price.gbp.toLocaleString()}
                 </h1>
               ) : null}
             </div>
@@ -65,7 +65,7 @@ const Coin = (props) => {
               <tr className="text-center bg-blue-50">
                 {coin.market_data ? (
                   <td>
-                    {coin.market_data.price_change_percentage_1h_in_currency.inr.toFixed(
+                    {coin.market_data.price_change_percentage_1h_in_currency.gbp.toFixed(
                       2
                     )}
                     %
@@ -73,7 +73,7 @@ const Coin = (props) => {
                 ) : null}
                 {coin.market_data ? (
                   <td className="border-white border-x-4">
-                    {coin.market_data.price_change_percentage_24h_in_currency.inr.toFixed(
+                    {coin.market_data.price_change_percentage_24h_in_currency.gbp.toFixed(
                       2
                     )}
                     %
@@ -81,7 +81,7 @@ const Coin = (props) => {
                 ) : null}
                 {coin.market_data ? (
                   <td>
-                    {coin.market_data.price_change_percentage_7d_in_currency.inr.toFixed(
+                    {coin.market_data.price_change_percentage_7d_in_currency.gbp.toFixed(
                       2
                     )}
                     %
@@ -89,7 +89,7 @@ const Coin = (props) => {
                 ) : null}
                 {coin.market_data ? (
                   <td className="border-white border-x-4">
-                    {coin.market_data.price_change_percentage_14d_in_currency.inr.toFixed(
+                    {coin.market_data.price_change_percentage_14d_in_currency.gbp.toFixed(
                       2
                     )}
                     %
@@ -97,7 +97,7 @@ const Coin = (props) => {
                 ) : null}
                 {coin.market_data ? (
                   <td>
-                    {coin.market_data.price_change_percentage_30d_in_currency.inr.toFixed(
+                    {coin.market_data.price_change_percentage_30d_in_currency.gbp.toFixed(
                       2
                     )}
                     %
@@ -105,7 +105,7 @@ const Coin = (props) => {
                 ) : null}
                 {coin.market_data ? (
                   <td className="border-l-4 border-white">
-                    {coin.market_data.price_change_percentage_1y_in_currency.inr.toFixed(
+                    {coin.market_data.price_change_percentage_1y_in_currency.gbp.toFixed(
                       2
                     )}
                     %
@@ -121,7 +121,7 @@ const Coin = (props) => {
               <h1 className="font-bold">24 Hour high</h1>
               {coin.market_data ? (
                 <div>
-                  &#8377;{coin.market_data.high_24h.inr.toLocaleString()}
+                  &pound;{coin.market_data.high_24h.gbp.toLocaleString()}
                 </div>
               ) : null}
             </div>
@@ -129,7 +129,7 @@ const Coin = (props) => {
               <h1 className="font-bold">24 Hour Low</h1>
               {coin.market_data ? (
                 <div>
-                  &#8377;{coin.market_data.low_24h.inr.toLocaleString()}
+                  &#163;{coin.market_data.low_24h.gbp.toLocaleString()}
                 </div>
               ) : null}
             </div>
@@ -137,7 +137,7 @@ const Coin = (props) => {
               <h1 className="font-bold">Market Capital</h1>
               {coin.market_data ? (
                 <div>
-                  &#8377;{coin.market_data.market_cap.usd.toLocaleString()}
+                  &#163;{coin.market_data.market_cap.gbp.toLocaleString()}
                 </div>
               ) : null}
             </div>
@@ -155,7 +155,7 @@ const Coin = (props) => {
           <div>
             <h1 className="pb-4 text-3xl font-bold">About</h1>
             <p
-              className="w-full"
+              className="w-full text-justify"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(coin.description)
                   ? coin.description.en
