@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { userSignIn } from "../../apis/user";
 import PageCover from "../../assets/login-cover.png";
 import Logo from "../../assets/logo.svg";
+import Axios from "../../utils/Axios";
 import { UserContext } from "../../utils/UserContext";
 import "./index.css";
 
@@ -22,6 +23,10 @@ function Login() {
         email: res.data.emailAddress,
       });
       localStorage.setItem("$AUTH_TOKEN", res.data.token);
+      localStorage.setItem("username", res.data.name);
+      Axios.defaults.headers.common = {
+        Authorization: `Bearer ${res.data.token}`,
+      };
       navigate("/db/crypto");
     });
   };

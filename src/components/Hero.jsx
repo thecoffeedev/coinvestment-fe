@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Logo from "../assets/logo.svg";
 import macImg from "../assets/Macbook-Pro.png";
 
 const Hero = () => {
@@ -8,7 +9,17 @@ const Hero = () => {
     <div className=" h-screen w-screen px-4 py-8 text-primaryLight bg-[#50f]">
       <div className="max-w-5xl h-full mx-auto ">
         <div className="flex h-fit justify-between w-full px-2">
-          <h1 className="text-2xl font-medium tracking-wide">COINVESTMENT</h1>
+          <div className="flex flex-row align-middle justify-center gap-4">
+            <img
+              src={Logo}
+              alt="coinvestment logo"
+              width="42px"
+              // className="border-primaryPurple border-2 border-opacity-60 rounded-lg"
+            />
+            <h1 className="text-2xl font-medium tracking-wide my-auto">
+              COINVESTMENT
+            </h1>
+          </div>
           <div className="flex font-extralight items-center text-[1rem] space-x-8">
             <a className="opacity-80 hover:opacity-100" href="/">
               <p>Available Bundle</p>

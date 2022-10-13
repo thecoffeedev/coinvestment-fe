@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-export default function Toastify(status, message) {
+export function Toastify(status, message) {
   switch (status) {
     case "success":
       return toast.success(message);

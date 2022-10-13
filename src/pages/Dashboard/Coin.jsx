@@ -128,9 +128,7 @@ const Coin = (props) => {
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
               <h1 className="font-bold">24 Hour Low</h1>
               {coin.market_data ? (
-                <div>
-                  &#163;{coin.market_data.low_24h.gbp.toLocaleString()}
-                </div>
+                <div>&#163;{coin.market_data.low_24h.gbp.toLocaleString()}</div>
               ) : null}
             </div>
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">

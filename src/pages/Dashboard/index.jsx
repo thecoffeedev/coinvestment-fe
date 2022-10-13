@@ -7,7 +7,7 @@ function Dashboard({ children }) {
   return (
     <div className="w-full">
       <Header />
-      <Tabs />
+      {/* <Tabs /> */}
       <Wrapper>{children}</Wrapper>
     </div>
   );

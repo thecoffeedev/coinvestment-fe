@@ -4,10 +4,11 @@ const UserContext = createContext(undefined);
 
 function UserProvider({ children }) {
   const defAuthToken = localStorage.getItem("$AUTH_TOKEN") || "";
+  const defUsername = localStorage.getItem("username") || "John Doe";
 
   const [userDetails, setUserDetails] = useState({
     authToken: defAuthToken,
-    username: "John Doe",
+    username: defUsername,
   });
 
   useEffect(() => {
