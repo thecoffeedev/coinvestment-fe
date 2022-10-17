@@ -1,36 +1,95 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Dashboard from ".";
+import { getBundles } from "../../apis/account";
+import { getSingleBundle, sellBundle } from "../../apis/bundle";
+import Alpha from "../../assets/icons8-alpha-32.png";
+import Beta from "../../assets/icons8-beta-32.png";
+import Mu from "../../assets/icons8-mu-32.png";
 
 function BundlePage() {
   const params = useParams();
 
+  const coin = {
+    name: "name",
+    image: { small: "d" },
+  };
+
   const [bundleData, setBundleData] = useState({});
+  const [bundleDesc, setBundleDesc] = useState({});
   const [bundleTransactions, setBundleTransactions] = useState([]);
   const [coins, setCoins] = useState([]);
   const url = `https://api.coingecko.com/api/v3/coins`;
+
+  useEffect(() => {
+    getSingleBundle(params.bundleAddress).then((res) => {
+      setBundleData(res.data.bundle);
+      setBundleTransactions(res.data.bundleTransaction);
+      getBundles().then((res) => {
+        setBundleDesc(
+          res.data.bundles.find(
+            (bundle) => bundle.bundleAddress === params.bundleAddress
+          )
+        );
+      });
+      // axios
+      //   .get(`${url}/${res.data.wallet.cryptocurrencyCode}`)
+      //   .then((response) => {
+      //     setCoin(response.data);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log("bundledesc", bundleDesc);
+  }, [bundleDesc]);
+
+  const handleSellBundle = () => {
+    sellBundle({ bundleAddress: bundleData.bundleAddress });
+  };
 
   return (
     <Dashboard>
       <div className="w-full max-w-3xl p-8 mx-auto text-center text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
         <div className="w-full px-4 py-4">
-          <h1 className="text-4xl font-bold">Wallet Details</h1>
+          <h1 className="text-4xl font-bold">Bundle Details</h1>
         </div>
         <div className="w-full max-w-3xl p-4 mx-auto mt-4 text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
-          <div className="flex justify-center px-8 mb-4 sm:justify-start "></div>
           <div className="grid w-full gap-8 p-2 px-8 text-center sm:grid-cols-2">
             <div className="flex justify-center sm:justify-start">
               {coin.image ? (
-                <img src={coin.image.small} alt={coin.name} />
+                <img
+                  src={
+                    bundleDesc.bundleName === "Alpha"
+                      ? Alpha
+                      : bundleDesc.bundleName === "Beta"
+                      ? Beta
+                      : Mu
+                  }
+                  alt={coin.name}
+                  className="invert"
+                  width={"82px"}
+                />
               ) : null}
-              <p className="p-3 font-bold uppercase ">{coin.name}</p>
-              {/* <p className="py-3 uppercase">({coin.symbol}/GBP)</p> */}
+              <p className="p-3 my-auto font-bold uppercase ">
+                {bundleDesc.bundleName}
+              </p>
             </div>
             <div className="relative flex justify-center sm:justify-end">
-              <p className="absolute bottom-12 text-green-600 font-bold">
+              <p className="absolute bottom-16 text-green-600 font-bold">
                 Balance
               </p>
-              <h1 className="text-5xl font-medium w-fit">
-                &pound;{walletData.currentBalance}
+              <h1 className="text-5xl my-auto font-medium w-fit">
+                {Number(
+                  (
+                    bundleTransactions[bundleTransactions.length - 1]?.amount /
+                    bundleTransactions[bundleTransactions.length - 1]
+                      ?.initialRate
+                  ).toFixed(4)
+                ) || 0}
               </h1>
             </div>
           </div>
@@ -42,24 +101,33 @@ function BundlePage() {
         </div>
         <div className="w-full max-w-3xl p-6 mx-auto mt-4 text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
           <div className="grid grid-cols-1 sm:grid-cols-2">
-            {/* <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
-              <h1 className="font-bold">Wallet Address</h1>
-              {coin.market_data ? <div>{walletData.walletAddress}</div> : null}
-            </div> */}
-            {/* <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
-              <h1 className="font-bold">24 Hour Low</h1>
-              {coin.market_data ? (
-                <div>&#163;{coin.market_data.low_24h.gbp.toLocaleString()}</div>
-              ) : null}
-            </div> */}
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
-              <h1 className="font-bold">Initial Balance</h1>
-              <div>&#163;{walletData.initialBalance}</div>
+              <h1 className="font-bold">Initial Balance (Units)</h1>
+              <div>
+                {Number(
+                  (
+                    bundleTransactions[0]?.amount /
+                    bundleTransactions[0]?.initialRate
+                  ).toFixed(4)
+                )}
+              </div>
             </div>
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
               <h1 className="font-bold">Holding Period</h1>
 
-              <div>{walletData.holdingPeriod} Months</div>
+              <div>{bundleData?.holdingPeriod} Months</div>
+            </div>
+            <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
+              <h1 className="font-bold">Min holding period</h1>
+              <div>{bundleDesc.minimumHoldingPeriod} Months</div>
+            </div>
+            <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
+              <h1 className="font-bold">Risk Level</h1>
+              <div>{bundleDesc.riskLevel}</div>
+            </div>
+            <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 col-span-2">
+              <h1 className="font-bold">Term</h1>
+              <div>{bundleDesc.term}</div>
             </div>
           </div>
         </div>
@@ -77,7 +145,7 @@ function BundlePage() {
               </tr>
             </thead>
             <tbody>
-              {walletTransactions.map((transaction, index) => (
+              {bundleTransactions?.map((transaction, index) => (
                 <tr key={index} className="text-center bg-blue-50">
                   <td>{transaction.transactionDatetime.split(" ")[0]}</td>
                   <td className="border-white border-x-4">

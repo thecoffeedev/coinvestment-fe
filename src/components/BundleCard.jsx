@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Alpha from "../assets/icons8-alpha-32.png";
+import Beta from "../assets/icons8-beta-32.png";
+import Mu from "../assets/icons8-mu-32.png";
 
 function BundleCard({ bundleObject }) {
   const navigate = useNavigate();
@@ -27,14 +30,25 @@ function BundleCard({ bundleObject }) {
       }
     >
       <div className="flex flex-row justify-start align-middle gap-4">
-        <img src={bundleCoin.image?.small} alt="" />
-        <h1 className="text-2xl my-auto">{bundleCoin.name}</h1>
+        <img
+          src={
+            bundleObject.bundleName === "Alpha"
+              ? Alpha
+              : bundleObject.bundleName === "Beta"
+              ? Beta
+              : Mu
+          }
+          alt=""
+          className="invert"
+          width={"48px"}
+        />
+        <h1 className="text-2xl my-auto">{bundleObject.bundleName}</h1>
       </div>
       <div className="flex flex-col mt-2">
-        <p>
+        {/* <p>
           <span className="font-bold">Bundle Name:</span>&nbsp;&nbsp;
           {bundleObject.bundleName}
-        </p>
+        </p> */}
         <p>
           <span className="font-bold">Holding Period:</span>&nbsp;&nbsp;
           {bundleObject.holdingPeriod} Months

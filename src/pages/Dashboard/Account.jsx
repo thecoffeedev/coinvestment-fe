@@ -30,19 +30,19 @@ function Account() {
           <p className="text-sm mb-2">Your active wallets are listed here.</p>
           <hr />
           <div className="cardsContainer flex flex-col mt-3 gap-3 h-[76vh] overflow-auto">
-            {walletsData.length > 0 &&
+            {walletsData?.length > 0 &&
               walletsData.map((wallet, index) => (
                 <WalletCard key={index} walletObject={wallet} />
               ))}
-            {walletsData.length > 0 &&
+            {walletsData?.length > 0 &&
               walletsData.map((wallet, index) => (
                 <WalletCard key={index} walletObject={wallet} />
               ))}
-            {walletsData.length > 0 &&
+            {walletsData?.length > 0 &&
               walletsData.map((wallet, index) => (
                 <WalletCard key={index} walletObject={wallet} />
               ))}
-            {walletsData.length > 0 &&
+            {walletsData?.length > 0 &&
               walletsData.map((wallet, index) => (
                 <WalletCard key={index} walletObject={wallet} />
               ))}
@@ -53,7 +53,7 @@ function Account() {
           <p className="text-sm mb-2">Your active wallets are listed here.</p>
           <hr />
           <div className="cardsContainer flex flex-col mt-3 gap-3">
-            {bundlesData.length > 0 &&
+            {bundlesData?.length > 0 &&
               bundlesData.map((bundle, index) => (
                 <BundleCard key={index} bundleObject={bundle} />
               ))}

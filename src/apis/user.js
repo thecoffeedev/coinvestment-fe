@@ -19,3 +19,7 @@ export const getUserData = async () => {
 export const changeUserEmail = async (user) => {
   return await Axios.post("/profile/change-emailaddress", user);
 };
+
+export const changeUserPassword = async (passwordObject) => {
+  return await Axios.post("/profile/change-password", passwordObject);
+};

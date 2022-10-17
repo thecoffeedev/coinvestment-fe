@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Dashboard from ".";
 import { getSingleWallet } from "../../apis/account";
+import { sellWallet } from "../../apis/wallet";
+import Modal from "../../components/Modal/Modal";
 
 const WalletPage = () => {
   const params = useParams();
@@ -12,6 +14,13 @@ const WalletPage = () => {
   const [walletTransactions, setWalletTransactions] = useState([]);
   const [coin, setCoin] = useState([]);
   const url = `https://api.coingecko.com/api/v3/coins`;
+  const [sellWalletModal, setSellWalletModal] = useState(false);
+  const [disableSellWalletBtn, setDisableSellWalletBtn] = useState(false);
+  const [sellWalletObj, setSellWalletObj] = useState({
+    amount: 0,
+    cardNumber: "",
+    expiry: "",
+  });
 
   useEffect(() => {
     getSingleWallet(params.walletAddress).then((res) => {
@@ -28,6 +37,17 @@ const WalletPage = () => {
     });
   }, []);
 
+  const handleSellWallet = () => {
+    sellWallet({
+      walletAddress: walletData.walletAddress,
+      initialRate: coin?.market_data?.current_price?.gbp,
+      amount: sellWalletObj.amount,
+      cardNumber: sellWalletObj.cardNumber,
+      expiry: sellWalletObj.expiry,
+      unitsSold: sellWalletObj.amount / coin?.market_data?.current_price?.gbp,
+    }).then((res) => console.log(res));
+  };
+
   return (
     <Dashboard>
       <div className="w-full max-w-3xl p-8 mx-auto text-center text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
@@ -42,38 +62,32 @@ const WalletPage = () => {
                 <img src={coin.image.small} alt={coin.name} />
               ) : null}
               <p className="p-3 font-bold uppercase ">{coin.name}</p>
-              {/* <p className="py-3 uppercase">({coin.symbol}/GBP)</p> */}
             </div>
             <div className="relative flex justify-center sm:justify-end">
               <p className="absolute bottom-12 text-green-600 font-bold">
                 Balance
               </p>
-              <h1 className="text-5xl font-medium w-fit">
-                &pound;{walletData.currentBalance}
+              <h1 className="text-5xl font-medium w-fit uppercase">
+                {coin.symbol} {walletData.currentBalance}
               </h1>
             </div>
           </div>
           <div className="flex flex-row justify-end">
-            <button className=" bg-red-500 text-white font-semibold text-lg rounded-lg px-4 py-1 mr-8">
+            <button
+              className=" bg-red-500 text-white font-semibold text-lg rounded-lg px-4 py-1 mr-8"
+              onClick={() => setSellWalletModal(true)}
+            >
               Sell
             </button>
           </div>
         </div>
         <div className="w-full max-w-3xl p-6 mx-auto mt-4 text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
           <div className="grid grid-cols-1 sm:grid-cols-2">
-            {/* <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
-              <h1 className="font-bold">Wallet Address</h1>
-              {coin.market_data ? <div>{walletData.walletAddress}</div> : null}
-            </div> */}
-            {/* <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
-              <h1 className="font-bold">24 Hour Low</h1>
-              {coin.market_data ? (
-                <div>&#163;{coin.market_data.low_24h.gbp.toLocaleString()}</div>
-              ) : null}
-            </div> */}
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
               <h1 className="font-bold">Initial Balance</h1>
-              <div>&#163;{walletData.initialBalance}</div>
+              <div className="uppercase">
+                {coin.symbol} {walletData.initialBalance}
+              </div>
             </div>
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
               <h1 className="font-bold">Holding Period</h1>
@@ -128,21 +142,96 @@ const WalletPage = () => {
             </tbody>
           </table>
         </div>
-
-        {/* <div className="w-full max-w-3xl p-6 mx-auto mt-4 text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
-          <div>
-            <h1 className="pb-4 text-3xl font-bold">About</h1>
-            <p
-              className="w-full text-justify"
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(coin.description)
-                  ? coin.description.en
-                  : null,
-              }}
-            ></p>
-          </div>
-        </div> */}
       </div>
+      {/* Sell Wallet Coin Modal */}
+      <Modal
+        title={`Sell ${coin.name} from wallet`}
+        onClose={() => setSellWalletModal(false)}
+        show={sellWalletModal}
+        actionBtn={`Sell ${coin.symbol}`}
+        submitAction={handleSellWallet}
+        primaryBtnDisable={disableSellWalletBtn}
+      >
+        <>
+          <div className="flex flex-row justify-center w-full gap-4 align-middle">
+            <img
+              src={coin.image?.small}
+              alt="cryptocurrency image"
+              width={"64px"}
+              className=""
+            />
+            <h1 className="font-bold text-3xl my-auto">{coin.name}</h1>
+          </div>
+          <div className="grid grid-cols-2 gap-4 my-4 px-8 mx-6">
+            <p>Balance in {coin.symbol} :</p>
+            <p>{walletData.currentBalance}</p>
+            <p>Current Transaction Rate :</p>
+            <p>&pound;{coin?.market_data?.current_price?.gbp}</p>
+
+            <p>Sell Amount (&pound;) :</p>
+            <input
+              type="number"
+              min={0}
+              placeholder="Enter amount"
+              className="border-2 rounded-sm px-2 h-7"
+              defaultValue={sellWalletObj.amount}
+              onChange={(e) =>
+                setSellWalletObj((prev) => {
+                  return { ...prev, amount: e.target.value };
+                })
+              }
+            />
+
+            <p>Sell Units :</p>
+            <p>
+              {sellWalletObj.amount
+                ? sellWalletObj.amount / coin?.market_data?.current_price?.gbp
+                : 0}
+            </p>
+            <p className="col-span-2 bg-green-300 border-2 rounded-md px-2 text-center text-sm">
+              Maximum Sell Amount is :{" "}
+              <strong>
+                &pound;
+                {coin?.market_data?.current_price?.gbp *
+                  walletData.currentBalance}
+              </strong>
+            </p>
+            <p className="col-span-2 border-2 bg-red-300 px-2 rounded-md text-sm text-center">
+              <strong>Note : </strong>Current Transaction Rate changes every 30
+              Seconds.
+            </p>
+            <hr className="col-span-2" />
+            <h1 className="font-bold text-xl col-span-2">
+              Credit / Debit card Details
+            </h1>
+            <p>Card Number :</p>
+            <input
+              type="number"
+              min={0}
+              placeholder="Enter card number"
+              className="border-2 rounded-sm px-2 h-7"
+              defaultValue={sellWalletObj.cardNumber}
+              onChange={(e) =>
+                setSellWalletObj((prev) => {
+                  return { ...prev, cardNumber: e.target.value };
+                })
+              }
+            />
+            <p>Expiry :</p>
+            <input
+              type="text"
+              placeholder="MM/YY"
+              className="border-2 rounded-sm px-2 h-7"
+              defaultValue={sellWalletObj.expiry}
+              onChange={(e) =>
+                setSellWalletObj((prev) => {
+                  return { ...prev, expiry: e.target.value };
+                })
+              }
+            />
+          </div>
+        </>
+      </Modal>
     </Dashboard>
   );
 };

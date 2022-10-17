@@ -1,21 +1,36 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Dashboard from ".";
-import { changeUserEmail, getUserData } from "../../apis/user";
+import {
+  changeUserEmail,
+  changeUserPassword,
+  getUserData,
+  userLogout,
+} from "../../apis/user";
 import ProfilePicture from "../../assets/defaultProfile.png";
 import Modal from "../../components/Modal/Modal";
 import { Toastify } from "../../utils/Toast";
 
 function Profile() {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({});
   const [changeEmailModal, setChangeEmailModal] = useState(false);
   const [disableChangeEmailBtn, setDisableChangeEmailBtn] = useState(false);
+  const [changePasswordModal, setChangePasswordModal] = useState(false);
+  const [disableChangePasswordBtn, setDisableChangePasswordBtn] =
+    useState(false);
   const [emailChangeObj, setEmailChangeObj] = useState({
     password: "",
     email1: "",
     email2: "",
   });
-  const [triggerUserFetch, setTriggerUserFetch] = useState(false);
+  const [passwordChangeObj, setPasswordChangeObj] = useState({
+    password: "",
+    newPassword1: "",
+    newPassword2: "",
+  });
 
   useEffect(() => {
     getUserData().then((res) => setUser(res.data));
@@ -50,9 +65,37 @@ function Profile() {
     }).then((res) => {
       Toastify("success", res.data.status.statusMessage);
       setChangeEmailModal(false);
-      setTriggerUserFetch(!triggerUserFetch);
+      getUserData().then((res) => setUser(res.data));
     });
     setDisableChangeEmailBtn(false);
+  };
+
+  const handlePasswordChangeSubmit = () => {
+    setDisableChangePasswordBtn(true);
+    if (passwordChangeObj.password === "") {
+      Toastify("error", "No password is given!");
+      setDisableChangePasswordBtn(false);
+      return;
+    }
+    if (passwordChangeObj.newPassword1 !== passwordChangeObj.newPassword2) {
+      Toastify("error", "New passwords does not match!");
+      setDisableChangePasswordBtn(false);
+      return;
+    }
+    changeUserPassword({
+      currentPassword: passwordChangeObj.password,
+      newPassword: passwordChangeObj.newPassword1,
+    })
+      .then((res) => {
+        Toastify("success", res.data.status.statusMessage);
+        setChangePasswordModal(false);
+        userLogout().then((res) => {
+          localStorage.clear();
+          navigate("/login");
+        });
+      })
+      .catch((err) => console.log(err));
+    setDisableChangePasswordBtn(false);
   };
 
   return (
@@ -87,7 +130,10 @@ function Profile() {
           >
             Change email
           </button>
-          <button className="rounded-full bg-[#3f0071] text-white px-3 py-1">
+          <button
+            className="rounded-full bg-[#3f0071] text-white px-3 py-1"
+            onClick={() => setChangePasswordModal(true)}
+          >
             Change password
           </button>
         </div>
@@ -128,13 +174,61 @@ function Profile() {
           />
           <label htmlFor="email2">Confirm email</label>
           <input
-            id="email-2"
+            id="email2"
             type="email"
             placeholder="Confirm new email"
             className="border-2 rounded-sm px-2"
             onChange={(e) =>
               setEmailChangeObj((prevState) => {
                 return { ...prevState, email2: e.target.value };
+              })
+            }
+          />
+        </div>
+      </Modal>
+      {/* Change Password modal */}
+      <Modal
+        title="Change your Password"
+        onClose={() => setChangePasswordModal(false)}
+        show={changePasswordModal}
+        actionBtn="Change password"
+        submitAction={handlePasswordChangeSubmit}
+        primaryBtnDisable={disableChangePasswordBtn}
+      >
+        <div className="grid grid-cols-2 gap-4 my-4 px-8 mx-6">
+          <label htmlFor="passwordP">Password</label>
+          <input
+            id="passwordP"
+            type="password"
+            placeholder="Enter your password"
+            className="border-2 rounded-sm px-2"
+            onChange={(e) =>
+              setPasswordChangeObj((prevState) => {
+                return { ...prevState, password: e.target.value };
+              })
+            }
+          />
+          <label htmlFor="passwordP1">New password</label>
+          <input
+            id="passwordP1"
+            type="password"
+            placeholder="Enter new password"
+            className="border-2 rounded-sm px-2"
+            onChange={(e) =>
+              setPasswordChangeObj((prevState) => {
+                return { ...prevState, newPassword1: e.target.value };
+              })
+            }
+          />
+          <label htmlFor="passwordP2">Confirm password</label>
+          <input
+            id="passwordP2"
+            type="password"
+            placeholder="Confirm new Password"
+            className="border-2 rounded-sm px-2"
+            onChange={(e) =>
+              setPasswordChangeObj((prevState) => {
+                return { ...prevState, newPassword2: e.target.value };
               })
             }
           />
