@@ -1,10 +1,12 @@
 import React from 'react'
-import macImg from '../assets/Macbook-Pro.png'
+import macImg from '../assets/MacCoins.png'
 import Button from '../components/Button.jsx'
+import { useNavigate } from 'react-router-dom'
 
 const Info = () => {
+    const navigate = useNavigate()
     return (
-        <div className='w-full h-screen px-10 bg-primaryPurple py-10 text-white'>
+        <div name="info" className='w-full h-screen px-10 bg-primaryPurple py-10 text-white'>
             <div className='flex h-full max-w-6xl mx-auto'>
                 <div className='w-2/4 h-full'>
                     <div className='flex justify-center items-center h-full px-8'>
@@ -22,7 +24,7 @@ const Info = () => {
                             <li>A range of investment options to choose from according to personal preferences</li>
                         </ul>
                         <div className='flex py-10 ml-6'>
-                            <Button text='Get Started' color='bg-[#008CFF]' />
+                            <Button onClick={() => { navigate("/db/crypto") }} text='Get Started' color='bg-[#008CFF]' />
                         </div>
                     </div>
                 </div>

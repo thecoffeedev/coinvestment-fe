@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.svg";
 import macImg from "../assets/Macbook-Pro.png";
+import { Link, animateScroll as scroll } from 'react-scroll'
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Hero = () => {
               src={Logo}
               alt="coinvestment logo"
               width="42px"
-              // className="border-primaryPurple border-2 border-opacity-60 rounded-lg"
+            // className="border-primaryPurple border-2 border-opacity-60 rounded-lg"
             />
             <h1 className="text-2xl font-medium tracking-wide my-auto">
               COINVESTMENT
@@ -22,16 +23,13 @@ const Hero = () => {
           </div>
           <div className="flex font-extralight items-center text-[1rem] space-x-8">
             <a className="opacity-80 hover:opacity-100" href="/">
-              <p>Available Bundle</p>
+              <Link to="bundles" smooth={true} offset={-100} duration={1000}>Available Bundle</Link>
             </a>
             <a className="opacity-80 hover:opacity-100" href="/">
-              <p>Why Coinvestment</p>
+              <Link to="info" smooth={true} offset={0} duration={1000}>Why Coinvestment</Link>
             </a>
             <a className="opacity-80 hover:opacity-100" href="/">
-              <p>FAQ</p>
-            </a>
-            <a className="opacity-80 hover:opacity-100" href="/">
-              <p>Resources</p>
+              <Link to="faq" smooth={true} offset={0} duration={1000}>FAQ</Link>
             </a>
             <button
               className="border border-white px-3 rounded-md hover:bg-white hover:bg-opacity-10 shadow-xl hover:shadow-none py-1"

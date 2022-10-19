@@ -3,6 +3,7 @@ import DOMPurify from "dompurify";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Dashboard from ".";
+import Modal from "../../components/Modal/Modal";
 
 const Coin = (props) => {
   const params = useParams();
@@ -20,17 +21,22 @@ const Coin = (props) => {
       });
   }, []);
 
+  const [CoinModal, setCoinModal] = useState(false)
+
   return (
+
+
     <Dashboard>
-      <div className="w-full max-w-3xl p-8 mx-auto text-center text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
+      <div className="w-full max-w-3xl p-8 mx-auto text-center text-gray-700 border border-indigo-200 rounded-lg shadow-lg shadow-indigo-100">
         <div className="w-full px-4 py-24">
           <h1 className="text-4xl font-bold uppercase">{coin.name}</h1>
         </div>
-        <div className="w-full max-w-3xl p-4 mx-auto mt-4 text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
-          <div className="flex justify-center px-8 mb-4 sm:justify-start ">
-            <h1 className=" text-sm bg-blue-500 w-fit p-[2px] px-2 rounded-md text-white shadow-lg shadow-blue-500">
+        <div className="w-full max-w-3xl p-4 mx-auto mt-4 text-gray-700 border border-indigo-200 rounded-lg shadow-lg shadow-indigo-100">
+          <div className="flex justify-center px-8 mb-4 sm:justify-between">
+            <h1 className=" text-sm my-auto bg-blue-500 w-fit p-[2px] px-2 rounded-md text-white shadow-lg shadow-blue-500">
               Rank #{coin.market_cap_rank}
             </h1>
+            <button onClick={() => { setCoinModal(true) }} className="border border-red-600 text-white rounded-md hover:shadow-md shadow-red-500 bg-red-600 shadow-lg hover:bg-red-700 p-[2px] px-2">Buy</button>
           </div>
           <div className="grid w-full gap-8 p-2 px-8 text-center sm:grid-cols-2">
             <div className="flex justify-center sm:justify-start">
@@ -163,6 +169,24 @@ const Coin = (props) => {
           </div>
         </div>
       </div>
+      {/* Coin Modal */}
+      <Modal
+        // title="Bundle Name"
+        onClose={() => setCoinModal(false)}
+        show={CoinModal}
+        actionBtn="Buy"
+      >
+        <div className=" flex bg-primaryPurple rounded-t-lg text-white py-4">
+          <div className=" flex items-center mx-auto">
+            {coin.image ? (
+              <img className="w-8 mr-4 rounded-full" src={coin.image.small} alt={coin.name} />
+            ) : null}
+            <h1 className=" font-semibold text-xl">{coin.name}</h1>
+          </div>
+        </div>
+
+      </Modal>
+
     </Dashboard>
   );
 };
