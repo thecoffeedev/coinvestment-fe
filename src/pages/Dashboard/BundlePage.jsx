@@ -161,7 +161,7 @@ function BundlePage() {
                 Balance
               </p>
               <h1 className="text-5xl my-auto font-medium w-fit">
-                &pound;{purchasePrice}
+                &pound;{Math.round(purchasePrice * 1000000) / 1000000}
               </h1>
             </div>
           </div>
