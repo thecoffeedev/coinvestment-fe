@@ -1,7 +1,8 @@
 import React from "react";
-import Bundle from "../../components/Bundle.jsx";
 import Bundles from "../../components/Bundles";
 import Buy from "../../components/Buy.jsx";
+import Faq from "../../components/Faq.jsx";
+import Footer from "../../components/Footer.jsx";
 import Hero from "../../components/Hero";
 import Info from "../../components/Info.jsx";
 import Points from "../../components/Points.jsx";
@@ -16,6 +17,8 @@ function Landing() {
       <Points />
       <Buy />
       <SupportCoins />
+      <Faq />
+      <Footer />
     </div>
   );
 }

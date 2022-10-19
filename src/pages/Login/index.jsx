@@ -42,7 +42,7 @@ function Login() {
             src={Logo}
             alt="coinvestment logo"
             width="56px"
-            // className="border-primaryPurple border-2 border-opacity-60 rounded-lg"
+          // className="border-primaryPurple border-2 border-opacity-60 rounded-lg"
           />
           <h1 className="title-coin font-bold my-auto text-primaryDark">
             COINVESTMENT
