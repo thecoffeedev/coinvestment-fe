@@ -17,7 +17,7 @@ const WalletPage = () => {
   const [sellWalletModal, setSellWalletModal] = useState(false);
   const [disableSellWalletBtn, setDisableSellWalletBtn] = useState(false);
   const [sellWalletObj, setSellWalletObj] = useState({
-    amount: 0,
+    units: 0,
     cardNumber: "",
     expiry: "",
   });
@@ -38,14 +38,36 @@ const WalletPage = () => {
   }, []);
 
   const handleSellWallet = () => {
+    setDisableSellWalletBtn(true);
     sellWallet({
       walletAddress: walletData.walletAddress,
       initialRate: coin?.market_data?.current_price?.gbp,
-      amount: sellWalletObj.amount,
+      unitsSold: sellWalletObj.units,
       cardNumber: sellWalletObj.cardNumber,
       expiry: sellWalletObj.expiry,
-      unitsSold: sellWalletObj.amount / coin?.market_data?.current_price?.gbp,
-    }).then((res) => console.log(res));
+      amount: sellWalletObj.units * coin?.market_data?.current_price?.gbp,
+    }).then((res) => {
+      console.log(res);
+      setSellWalletObj({
+        units: 0,
+        cardNumber: "",
+        expiry: "",
+      });
+      setDisableSellWalletBtn(false);
+      setSellWalletModal(false);
+      getSingleWallet(params.walletAddress).then((res) => {
+        setWalletData(res.data.wallet);
+        setWalletTransactions(res.data.walletTransactions);
+        axios
+          .get(`${url}/${res.data.wallet.cryptocurrencyCode}`)
+          .then((response) => {
+            setCoin(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    });
   };
 
   return (
@@ -168,34 +190,44 @@ const WalletPage = () => {
             <p>Current Transaction Rate :</p>
             <p>&pound;{coin?.market_data?.current_price?.gbp}</p>
 
-            <p>Sell Amount (&pound;) :</p>
+            <p>Sell Units (Max {walletData.currentBalance}) :</p>
             <input
               type="number"
               min={0}
               placeholder="Enter amount"
               className="border-2 rounded-sm px-2 h-7"
-              defaultValue={sellWalletObj.amount}
+              value={sellWalletObj.units}
               onChange={(e) =>
                 setSellWalletObj((prev) => {
-                  return { ...prev, amount: e.target.value };
+                  if (
+                    !e.target.value?.toString()?.split("").includes(".") ||
+                    (e.target.value?.toString()?.split(".").length === 2 &&
+                      e.target.value?.toString()?.split(".")[1]?.split("")
+                        .length <= 4 &&
+                      e.target.value <= +walletData.currentBalance)
+                  ) {
+                    return { ...prev, units: e.target.value };
+                  } else {
+                    return prev;
+                  }
                 })
               }
             />
 
-            <p>Sell Units :</p>
+            <p>Amount :</p>
             <p>
-              {sellWalletObj.amount
-                ? sellWalletObj.amount / coin?.market_data?.current_price?.gbp
+              {sellWalletObj.units
+                ? sellWalletObj.units * coin?.market_data?.current_price?.gbp
                 : 0}
             </p>
-            <p className="col-span-2 bg-green-300 border-2 rounded-md px-2 text-center text-sm">
+            {/* <p className="col-span-2 bg-green-300 border-2 rounded-md px-2 text-center text-sm">
               Maximum Sell Amount is :{" "}
               <strong>
                 &pound;
                 {coin?.market_data?.current_price?.gbp *
                   walletData.currentBalance}
               </strong>
-            </p>
+            </p> */}
             <p className="col-span-2 border-2 bg-red-300 px-2 rounded-md text-sm text-center">
               <strong>Note : </strong>Current Transaction Rate changes every 30
               Seconds.

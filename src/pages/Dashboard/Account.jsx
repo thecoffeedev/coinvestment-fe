@@ -34,18 +34,6 @@ function Account() {
               walletsData.map((wallet, index) => (
                 <WalletCard key={index} walletObject={wallet} />
               ))}
-            {walletsData?.length > 0 &&
-              walletsData.map((wallet, index) => (
-                <WalletCard key={index} walletObject={wallet} />
-              ))}
-            {walletsData?.length > 0 &&
-              walletsData.map((wallet, index) => (
-                <WalletCard key={index} walletObject={wallet} />
-              ))}
-            {walletsData?.length > 0 &&
-              walletsData.map((wallet, index) => (
-                <WalletCard key={index} walletObject={wallet} />
-              ))}
           </div>
         </div>
         <div className="flex flex-col py-2 px-4 w-1/2 border-blue-200 border-2  rounded-xl">
