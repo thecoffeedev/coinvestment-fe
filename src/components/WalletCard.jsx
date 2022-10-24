@@ -27,8 +27,8 @@ function WalletCard({ walletObject }) {
       }
     >
       <div className="flex flex-row justify-start align-middle gap-4">
-        <img src={walletCoin.image?.small} alt="" />
-        <h1 className="text-2xl my-auto">{walletCoin.name}</h1>
+        <img src={walletCoin.image?.small} alt="" width={'34px'} />
+        <h1 className="text-2xl my-auto ml-2">{walletCoin.name}</h1>
       </div>
       <div className="flex flex-col mt-2">
         <p>

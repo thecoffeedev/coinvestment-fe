@@ -4,23 +4,10 @@ import { useNavigate } from "react-router-dom";
 import Alpha from "../assets/icons8-alpha-32.png";
 import Beta from "../assets/icons8-beta-32.png";
 import Mu from "../assets/icons8-mu-32.png";
+import dynamicBundleImages from "../helpers/dynamicBundleImages";
 
 function BundleCard({ bundleObject }) {
   const navigate = useNavigate();
-  const [bundleCoin, setBundleCoin] = useState({});
-  useEffect(() => {
-    axios
-      .get(
-        `https://api.coingecko.com/api/v3/coins/${bundleObject.cryptocurrencyCode}`
-      )
-      .then((res) => setBundleCoin(res.data))
-      .catch((error) => console.log(error));
-  }, []);
-
-  useEffect(() => {
-    console.log("wallet-coin", bundleCoin);
-    console.log("wallet data internal", bundleObject);
-  }, [bundleCoin]);
 
   return (
     <div
@@ -30,7 +17,7 @@ function BundleCard({ bundleObject }) {
       }
     >
       <div className="flex flex-row justify-start align-middle gap-4">
-        <img
+        {/* <img
           src={
             bundleObject.bundleName === "Alpha"
               ? Alpha
@@ -41,7 +28,8 @@ function BundleCard({ bundleObject }) {
           alt=""
           className="invert"
           width={"48px"}
-        />
+        /> */}
+             <img src={dynamicBundleImages(bundleObject.bundleName)} alt="alpha" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
         <h1 className="text-2xl my-auto">{bundleObject.bundleName}</h1>
       </div>
       <div className="flex flex-col mt-2">

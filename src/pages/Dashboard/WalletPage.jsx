@@ -106,6 +106,18 @@ const WalletPage = () => {
         <div className="w-full max-w-3xl p-6 mx-auto mt-4 text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
           <div className="grid grid-cols-1 sm:grid-cols-2">
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
+              <h1 className="font-bold">Market Price <span className="font-normal">(Per <span className="uppercase">{coin.symbol}</span>)</span></h1>
+              <div className="uppercase">
+              &pound;{coin?.market_data?.current_price?.gbp}
+              </div>
+            </div>
+            <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
+              <h1 className="font-bold">24h Price Change <span className="font-normal"></span></h1>
+              <div className={coin?.market_data?.price_change_percentage_24h > 0 ? "text-green-500" : "text-red-500"}>
+              {coin?.market_data?.price_change_percentage_24h}%
+              </div>
+            </div>
+            <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
               <h1 className="font-bold">Initial Balance</h1>
               <div className="uppercase">
                 {coin.symbol} {walletData.initialBalance}
@@ -147,9 +159,9 @@ const WalletPage = () => {
                   <td>{transaction.initialRate}</td>
 
                   <td className="border-white border-x-4">
-                    {transaction.amount}
+                  {Math.round((transaction.amount - transaction.chargeApplied) * 1000) / 1000}
                   </td>
-                  <td>{transaction.chargeApplied}</td>
+                  <td>{Math.round(transaction.chargeApplied * 1000) / 1000}</td>
                   <td
                     className={`border-l-4 border-white text-white ${
                       transaction.action === "BUY"

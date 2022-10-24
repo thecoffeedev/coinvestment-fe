@@ -1,49 +1,80 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Dashboard from ".";
-import alpha from "../../assets/icons8-alpha-32.png"
-import beta from "../../assets/icons8-beta-32.png"
-import mu from "../../assets/icons8-mu-32.png"
-import omega from "../../assets/icons8-omega-32.png"
-import pi from "../../assets/icons8-pi-32.png"
-import sigma from "../../assets/icons8-sigma-32.png"
-import bitcoin from "../../assets/bitcoin.png"
-import ethereum from "../../assets/ethereum.png"
-import bitcoin_cash from "../../assets/bitcoin-cash.png"
-import tether from "../../assets/tether.png"
-import ripple from "../../assets/ripple.png"
-import litecoin from "../../assets/litecoin.png"
-import monero from "../../assets/monero.png"
-import dogecoin from "../../assets/dogecoin.png"
-import shiba_inu from "../../assets/shiba-inu.png"
-import ethereum_classic from "../../assets/ethereum-classic.png"
-import apecoin from "../../assets/apecoin.png"
-import chainlink from "../../assets/chainlink.png"
-import decentraland from "../../assets/decentraland.png"
-import quant_network from "../../assets/quant-network.png"
-import wrapped_bitcoin from "../../assets/wrapped-bitcoin.png"
-import usd_coin from "../../assets/usd-coin.png"
-import dai from "../../assets/dai.png"
-import binancecoin from "../../assets/binancecoin.png"
-import solana from "../../assets/solana.png"
-import algorand from "../../assets/algorand.png"
-import binance_usd from "../../assets/binance-usd.png"
-import flow from "../../assets/flow.png"
-import filecoin from "../../assets/filecoin.png"
-import polkadot from "../../assets/polkadot.png"
+import { getAllBundles } from "../../apis/bundle";
+import algorand from "../../assets/algorand.png";
+import apecoin from "../../assets/apecoin.png";
+import binance_usd from "../../assets/binance-usd.png";
+import binancecoin from "../../assets/binancecoin.png";
+import bitcoin_cash from "../../assets/bitcoin-cash.png";
+import bitcoin from "../../assets/bitcoin.png";
+import chainlink from "../../assets/chainlink.png";
+import dai from "../../assets/dai.png";
+import decentraland from "../../assets/decentraland.png";
+import dogecoin from "../../assets/dogecoin.png";
+import ethereum_classic from "../../assets/ethereum-classic.png";
+import ethereum from "../../assets/ethereum.png";
+import filecoin from "../../assets/filecoin.png";
+import flow from "../../assets/flow.png";
+import alpha from "../../assets/icons8-alpha-32.png";
+import beta from "../../assets/icons8-beta-32.png";
+import mu from "../../assets/icons8-mu-32.png";
+import omega from "../../assets/icons8-omega-32.png";
+import pi from "../../assets/icons8-pi-32.png";
+import sigma from "../../assets/icons8-sigma-32.png";
+import litecoin from "../../assets/litecoin.png";
+import monero from "../../assets/monero.png";
+import polkadot from "../../assets/polkadot.png";
+import quant_network from "../../assets/quant-network.png";
+import ripple from "../../assets/ripple.png";
+import shiba_inu from "../../assets/shiba-inu.png";
+import solana from "../../assets/solana.png";
+import tether from "../../assets/tether.png";
+import usd_coin from "../../assets/usd-coin.png";
+import wrapped_bitcoin from "../../assets/wrapped-bitcoin.png";
 import Modal from "../../components/Modal/Modal";
+import dynamicBundleImages from "../../helpers/dynamicBundleImages";
 
 
 function Bundles() {
+  const navigate = useNavigate()
 
   const [bundleModal, setBundleModal] = useState(false)
-  const [transactionModal, setTransactionModal] = useState(false)
+  const [transactionModal, setTransactionModal] = useState(false);
+
+  const [bundles, setBundles] = useState([]);
+
+  useEffect(() => {
+    getAllBundles()
+      .then((res) => setBundles(res.data.availableBundles))
+      .catch((error) => console.error(error));
+  }, []);
+  
 
   return <Dashboard>
     <div className="w-full h-full px-4 py-20 my-auto">
       <div className="grid gap-4 grid-cols-3 p-4 max-w-5xl mx-auto border border-blue-200 shadow-2xl rounded-xl shadow-indigo-300">
 
+        {bundles.length > 0 && bundles.map((bundle, index) => (
+          <div key={index} onClick={() => { navigate(`/db/bundles/${bundle.bundleName}`) }} className="p-4 border cursor-pointer hover:from-indigo-300 border-indigo-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+          w-full">
+           <div className=" flex items-center">
+             <img src={dynamicBundleImages(bundle.bundleName)} alt="alpha" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
+             <h1 className=" font-semibold text-xl uppercase">{bundle.bundleName}</h1>
+           </div>
+           <div className="py-4 flex -space-x-2">
+             <img src={bitcoin} alt="" className="w-8 rounded-full" />
+             <img src={ethereum} alt="" className="w-8 bg-white rounded-full shadow-lg" />
+           </div>
+           <h1 className="text-center underline">Learn more</h1>
+         </div>
+        ))}
+
+        {/* <hr className="col-span-3" /> */}
+
+
         {/* Alpha Pack */}
-        <div onClick={() => { setBundleModal(true) }} className="p-4 border cursor-pointer hover:from-indigo-300 border-indigo-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+        {/* <div onClick={() => { setBundleModal(true) }} className="p-4 border cursor-pointer hover:from-indigo-300 border-indigo-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
          w-full">
           <div className=" flex items-center">
             <img src={alpha} alt="alpha" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
@@ -54,10 +85,10 @@ function Bundles() {
             <img src={ethereum} alt="" className="w-8 bg-white rounded-full shadow-lg" />
           </div>
           <h1 className="text-center underline">Learn more</h1>
-        </div>
+        </div> */}
 
         {/* Beta Pack */}
-        <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+        {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
          w-full">
           <div className=" flex items-center">
             <img src={beta} alt="beta" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
@@ -71,10 +102,10 @@ function Bundles() {
             <img src={monero} alt="" className="w-8 bg-white rounded-full shadow-xl" />
           </div>
           <h1 className="text-center underline">Learn more</h1>
-        </div>
+        </div> */}
 
         {/* Sigma Pack */}
-        <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+        {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
          w-full">
           <div className=" flex items-center">
             <img src={sigma} alt="sigma" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
@@ -87,10 +118,10 @@ function Bundles() {
             <img src={apecoin} alt="" className="w-8 bg-white rounded-full shadow-xl" />
           </div>
           <h1 className="text-center underline">Learn more</h1>
-        </div>
+        </div> */}
 
         {/* Mu Pack */}
-        <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+        {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
          w-full">
           <div className=" flex items-center">
             <img src={mu} alt="mu" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
@@ -104,10 +135,10 @@ function Bundles() {
             <img src={usd_coin} alt="" className="w-8 bg-white rounded-full shadow-xl" />
           </div>
           <h1 className="text-center underline">Learn more</h1>
-        </div>
+        </div> */}
 
         {/* Omega Pack */}
-        <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+        {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
          w-full">
           <div className=" flex items-center">
             <img src={omega} alt="omega" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
@@ -119,10 +150,10 @@ function Bundles() {
             <img src={solana} alt="" className="w-8 bg-white rounded-full shadow-xl" />
           </div>
           <h1 className="text-center underline">Learn more</h1>
-        </div>
+        </div> */}
 
         {/* Pi Pack */}
-        <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+        {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
          w-full">
           <div className=" flex items-center">
             <img src={pi} alt="pi" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
@@ -136,7 +167,7 @@ function Bundles() {
             <img src={polkadot} alt="" className="w-8 bg-white rounded-full shadow-xl" />
           </div>
           <h1 className="text-center underline">Learn more</h1>
-        </div>
+        </div> */}
 
 
       </div>

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Account from "./pages/Dashboard/Account";
+import BundleBuyPage from "./pages/Dashboard/BundleBuyPage";
 import BundlePage from "./pages/Dashboard/BundlePage";
 import Bundles from "./pages/Dashboard/Bundles";
 import Coin from "./Pages/Dashboard/Coin";
@@ -25,6 +26,7 @@ function App() {
               <Route element={<Crypto />} path="/db/crypto" />
               <Route element={<Coin />} path="/db/crypto/:coinId" />
               <Route element={<Bundles />} path="/db/bundles" />
+              <Route element={<BundleBuyPage />} path="/db/bundles/:bundleName" />
               <Route element={<Account />} path="/db/account" />
               <Route element={<Profile />} path="/profile" />
               <Route
