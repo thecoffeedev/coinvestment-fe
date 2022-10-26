@@ -184,6 +184,82 @@ const Coin = (props) => {
             <h1 className=" font-semibold text-xl">{coin.name}</h1>
           </div>
         </div>
+        <div className="grid rounded-b-lg bg-primaryPurple grid-cols-2 gap-4 p-8">
+          <p>Market Price :</p>
+          <p>&pound;{coin?.market_data?.current_price.gbp}</p>
+
+          <p>Buy Units :</p>
+          <input
+            type="number"
+            min={0}
+            placeholder="Enter units"
+            className="border-2 rounded-sm px-2 h-7"
+          // value={sellWalletObj.units}
+          // onChange={(e) =>
+          // setSellWalletObj((prev) => {
+          // if (
+          // !e.target.value?.toString()?.split("").includes(".") ||
+          // (e.target.value?.toString()?.split(".").length === 2 &&
+          // e.target.value?.toString()?.split(".")[1]?.split("")
+          // .length <= 4 &&
+          // e.target.value <= +walletData.currentBalance)
+          // ) {
+          // return { ...prev, units: e.target.value };
+          // } else {
+          // return prev;
+          // }
+          // })
+          // }
+          />
+
+          <p>Amount :</p>
+          <p>
+            {/* {sellWalletObj.units
+              ? sellWalletObj.units * coin?.market_data?.current_price?.gbp
+              : 0} */}
+          </p>
+          {/* <p className="col-span-2 bg-green-300 border-2 rounded-md px-2 text-center text-sm">
+              Maximum Sell Amount is :{" "}
+              <strong>
+                &pound;
+                {coin?.market_data?.current_price?.gbp *
+                  walletData.currentBalance}
+              </strong>
+            </p> */}
+          <p className="col-span-2 border-2 bg-red-300 px-2 rounded-md text-sm text-center">
+            <strong>Note : </strong>Current Transaction Rate changes every 30
+            Seconds.
+          </p>
+          <hr className="col-span-2" />
+          <h1 className="font-bold text-xl col-span-2">
+            Credit / Debit card Details
+          </h1>
+          <p>Card Number :</p>
+          <input
+            type="number"
+            min={0}
+            placeholder="Enter card number"
+            className="border-2 rounded-sm px-2 h-7"
+          // defaultValue={sellWalletObj.cardNumber}
+          // onChange={(e) =>
+          // setSellWalletObj((prev) => {
+          // return { ...prev, cardNumber: e.target.value };
+          // })
+          // }
+          />
+          <p>Expiry :</p>
+          <input
+            type="text"
+            placeholder="MM/YY"
+            className="border-2 rounded-sm px-2 h-7"
+          // defaultValue={sellWalletObj.expiry}
+          // onChange={(e) =>
+          // setSellWalletObj((prev) => {
+          // return { ...prev, expiry: e.target.value };
+          // })
+          // }
+          />
+        </div>
 
       </Modal>
 

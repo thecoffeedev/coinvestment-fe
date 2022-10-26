@@ -36,7 +36,7 @@ function BundlePage() {
       setPurchaseCut(
         (res.data.bundleTransaction.amount /
           res.data.bundleTransaction.initialRate) *
-          100
+        100
       );
       getBundles().then((res) => {
         setBundleDesc(
@@ -104,7 +104,7 @@ function BundlePage() {
         setPurchaseCut(
           (res.data.bundleTransaction.amount /
             res.data.bundleTransaction.initialRate) *
-            100
+          100
         );
         getBundles().then((res) => {
           setBundleDesc(
@@ -267,11 +267,10 @@ function BundlePage() {
                   </td>
                   <td>{Math.round(transaction.chargeApplied * 1000) / 1000}</td>
                   <td
-                    className={`border-l-4 border-white text-white ${
-                      transaction.action === "BUY"
-                        ? "bg-green-500"
-                        : "bg-red-500"
-                    } `}
+                    className={`border-l-4 border-white text-white ${transaction.action === "BUY"
+                      ? "bg-green-500"
+                      : "bg-red-500"
+                      } `}
                   >
                     {transaction.action}
                   </td>
@@ -295,8 +294,8 @@ function BundlePage() {
               <img
                 src={Alpha}
                 alt="cryptocurrency image"
-                width={"64px"}
-                className="invert"
+                width={"32px"}
+                className="invert "
               />
               <h1 className="font-bold text-3xl my-auto">
                 {bundleDesc.bundleName}

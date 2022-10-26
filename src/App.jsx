@@ -22,22 +22,22 @@ function App() {
       <UserProvider>
         <Router>
           <Routes>
-            <Route element={<PrivateRoutes />}>
-              <Route element={<Crypto />} path="/db/crypto" />
-              <Route element={<Coin />} path="/db/crypto/:coinId" />
-              <Route element={<Bundles />} path="/db/bundles" />
-              <Route element={<BundleBuyPage />} path="/db/bundles/:bundleName" />
-              <Route element={<Account />} path="/db/account" />
-              <Route element={<Profile />} path="/profile" />
-              <Route
-                element={<WalletPage />}
-                path="/db/account/wallet/:walletAddress"
-              />
-              <Route
-                element={<BundlePage />}
-                path="/db/account/bundle/:bundleAddress"
-              />
-            </Route>
+            {/* <Route element={<PrivateRoutes />}> */}
+            <Route element={<Crypto />} path="/db/crypto" />
+            <Route element={<Coin />} path="/db/crypto/:coinId" />
+            <Route element={<Bundles />} path="/db/bundles" />
+            <Route element={<BundleBuyPage />} path="/db/bundles/:bundleName" />
+            <Route element={<Account />} path="/db/account" />
+            <Route element={<Profile />} path="/profile" />
+            <Route
+              element={<WalletPage />}
+              path="/db/account/wallet/:walletAddress"
+            />
+            <Route
+              element={<BundlePage />}
+              path="/db/account/bundle/:bundleAddress"
+            />
+            {/* </Route> */}
             <Route element={<Landing />} path="/" exact />
             <Route element={<Login />} path="/login" />
             <Route element={<Register />} path="/register" />
