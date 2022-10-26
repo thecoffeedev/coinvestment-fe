@@ -103,7 +103,7 @@ function BundleBuyPage() {
         setPurchaseCut(
           (res.data.bundleTransaction.amount /
             res.data.bundleTransaction.initialRate) *
-            100
+          100
         );
         getBundles().then((res) => {
           setBundleDesc(
@@ -142,7 +142,7 @@ function BundleBuyPage() {
         <div className="w-full max-w-3xl p-4 mx-auto mt-4 text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
           <div className="grid w-full gap-8 p-2 px-8 text-center sm:grid-cols-2">
             <div className="flex justify-center sm:justify-start">
-            <img
+              <img
                 src={dynamicBundleImages(bundleDesc.bundleName)}
                 alt="alpha"
                 className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple"
@@ -176,7 +176,7 @@ function BundleBuyPage() {
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
               <h1 className="font-bold">24h Price Change</h1>
               <div className={priceChange > 0 ? "text-green-500" : "text-red-500"}>
-              {Math.round(priceChange * 100000) / 100000}%
+                {Math.round(priceChange * 100000) / 100000}%
               </div>
             </div>
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
@@ -230,7 +230,7 @@ function BundleBuyPage() {
 
         {/* Sell Bundle Coin Modal */}
         <Modal
-          title={`Sell Bundle`}
+          title={`Buy Bundle`}
           onClose={() => setSellBundleModal(false)}
           show={sellBundleModal}
           actionBtn={`Sell ${bundleDesc.bundleName}`}
@@ -238,12 +238,11 @@ function BundleBuyPage() {
           primaryBtnDisable={disableSellBundleBtn}
         >
           <>
-            <div className="flex flex-row justify-center w-full gap-4 align-middle">
+            <div className="flex flex-row bg-primaryPurple text-white justify-center w-full gap-4 align-middle">
               <img
                 src={Alpha}
                 alt="cryptocurrency image"
-                width={"64px"}
-                className="invert"
+                className="w-12"
               />
               <h1 className="font-bold text-3xl my-auto">
                 {bundleDesc.bundleName}

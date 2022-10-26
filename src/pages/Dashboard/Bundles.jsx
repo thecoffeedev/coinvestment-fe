@@ -49,7 +49,7 @@ function Bundles() {
       .then((res) => setBundles(res.data.availableBundles))
       .catch((error) => console.error(error));
   }, []);
-  
+
 
   return <Dashboard>
     <div className="w-full h-full px-4 py-20 my-auto">
@@ -58,16 +58,16 @@ function Bundles() {
         {bundles.length > 0 && bundles.map((bundle, index) => (
           <div key={index} onClick={() => { navigate(`/db/bundles/${bundle.bundleName}`) }} className="p-4 border cursor-pointer hover:from-indigo-300 border-indigo-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
           w-full">
-           <div className=" flex items-center">
-             <img src={dynamicBundleImages(bundle.bundleName)} alt="alpha" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
-             <h1 className=" font-semibold text-xl uppercase">{bundle.bundleName}</h1>
-           </div>
-           <div className="py-4 flex -space-x-2">
-             <img src={bitcoin} alt="" className="w-8 rounded-full" />
-             <img src={ethereum} alt="" className="w-8 bg-white rounded-full shadow-lg" />
-           </div>
-           <h1 className="text-center underline">Learn more</h1>
-         </div>
+            <div className=" flex items-center">
+              <img src={dynamicBundleImages(bundle.bundleName)} alt="alpha" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
+              <h1 className=" font-semibold text-xl uppercase">{bundle.bundleName}</h1>
+            </div>
+            <div className="py-4 flex -space-x-2">
+              <img src={bitcoin} alt="" className="w-8 rounded-full" />
+              <img src={ethereum} alt="" className="w-8 bg-white rounded-full shadow-lg" />
+            </div>
+            <h1 className="text-center underline">Learn more</h1>
+          </div>
         ))}
 
         {/* <hr className="col-span-3" /> */}
