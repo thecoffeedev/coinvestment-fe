@@ -9,6 +9,7 @@ import Beta from "../../assets/icons8-beta-32.png";
 import Mu from "../../assets/icons8-mu-32.png";
 import Modal from "../../components/Modal/Modal";
 import dynamicBundleImages from "../../helpers/dynamicBundleImages";
+import { Toastify } from "../../utils/Toast";
 
 function BundlePage() {
   const params = useParams();
@@ -18,7 +19,7 @@ function BundlePage() {
   const [bundleTransactions, setBundleTransactions] = useState([]);
   const [purchaseCut, setPurchaseCut] = useState(0);
   const [purchasePrice, setPurchasePrice] = useState(0);
-  const [marketRate, setMarketRate] = useState(0)
+  const [marketRate, setMarketRate] = useState(0);
   const [coins, setCoins] = useState([]);
   const url = `https://api.coingecko.com/api/v3/coins`;
   const [sellBundleModal, setSellBundleModal] = useState(false);
@@ -36,7 +37,7 @@ function BundlePage() {
       setPurchaseCut(
         (res.data.bundleTransaction.amount /
           res.data.bundleTransaction.initialRate) *
-        100
+          100
       );
       getBundles().then((res) => {
         setBundleDesc(
@@ -79,7 +80,7 @@ function BundlePage() {
           currTotal + (value.percentage / 100) * value.currentPrice,
         0
       );
-      setMarketRate(totalPrice)
+      setMarketRate(totalPrice);
       if (bundleTransactions.find((el) => el.action === "SELL")) {
         totalPrice = 0;
       }
@@ -96,41 +97,45 @@ function BundlePage() {
       cardNumber: sellBundleObj.cardNumber,
       expiry: sellBundleObj.expiry,
     }).then((res) => {
-      console.log(res);
-      setSellBundleModal(false);
-      getSingleBundle(params.bundleAddress).then((res) => {
-        setBundleData(res.data.bundle);
-        setBundleTransactions(res.data.bundleTransaction);
-        setPurchaseCut(
-          (res.data.bundleTransaction.amount /
-            res.data.bundleTransaction.initialRate) *
-          100
-        );
-        getBundles().then((res) => {
-          setBundleDesc(
-            res.data.bundles.find(
-              (bundle) => bundle.bundleAddress === params.bundleAddress
-            )
+      if (res.data.status.statusCode === "FAILURE") {
+        Toastify("error", res.data.status.statusMessage);
+      } else {
+        setSellBundleModal(false);
+        Toastify("success", res.data.status.statusMessage);
+        getSingleBundle(params.bundleAddress).then((res) => {
+          setBundleData(res.data.bundle);
+          setBundleTransactions(res.data.bundleTransaction);
+          setPurchaseCut(
+            (res.data.bundleTransaction.amount /
+              res.data.bundleTransaction.initialRate) *
+              100
           );
-          res.data.bundles
-            .find((bundle) => bundle.bundleAddress === params.bundleAddress)
-            .bundleCryptocurrencies?.map((currency) => {
-              axios
-                .get(`${url}/${currency.cryptocurrencyCode}`)
-                .then((response) => {
-                  setCoins((prev) => {
-                    if (prev.find((e) => response.data.id === e.id)) {
-                      return prev;
-                    }
-                    return [...prev, response.data];
+          getBundles().then((res) => {
+            setBundleDesc(
+              res.data.bundles.find(
+                (bundle) => bundle.bundleAddress === params.bundleAddress
+              )
+            );
+            res.data.bundles
+              .find((bundle) => bundle.bundleAddress === params.bundleAddress)
+              .bundleCryptocurrencies?.map((currency) => {
+                axios
+                  .get(`${url}/${currency.cryptocurrencyCode}`)
+                  .then((response) => {
+                    setCoins((prev) => {
+                      if (prev.find((e) => response.data.id === e.id)) {
+                        return prev;
+                      }
+                      return [...prev, response.data];
+                    });
+                  })
+                  .catch((error) => {
+                    console.log(error);
                   });
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
-            });
+              });
+          });
         });
-      });
+      }
     });
   };
 
@@ -142,7 +147,7 @@ function BundlePage() {
         </div>
         <div className="w-full max-w-3xl p-4 mx-auto mt-4 text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
           <div className="grid w-full gap-8 p-2 px-8 text-center sm:grid-cols-2">
-            <div className="flex justify-center sm:justify-start">
+            <div className="flex justify-center sm:justify-start  w-[48px] h-[48px]">
               {/* <img
                 src={
                   bundleDesc.bundleName === "Alpha"
@@ -176,7 +181,7 @@ function BundlePage() {
           {purchasePrice !== 0 && (
             <div className="flex flex-row justify-end">
               <button
-                className=" bg-red-500 text-white font-semibold text-lg rounded-lg px-4 py-1 mr-8"
+                className=" bg-red-500 shadow-lg shadow-red-400 hover:shadow text-white font-semibold text-lg rounded-lg px-4 py-1 mr-8"
                 onClick={() => setSellBundleModal(true)}
               >
                 Sell
@@ -226,7 +231,7 @@ function BundlePage() {
                     src={coin.image.small}
                     alt="crypto coin image"
                     // width={"32px"}
-                    className="mx-auto"
+                    className="mx-auto rounded-full"
                   />
                   <h1 className="inline-block">{coin.name}</h1>
                 </div>
@@ -263,14 +268,17 @@ function BundlePage() {
                   <td>{transaction.initialRate}</td>
 
                   <td className="border-white border-x-4">
-                    {Math.round((transaction.amount - transaction.chargeApplied) * 1000) / 1000}
+                    {Math.round(
+                      (transaction.amount - transaction.chargeApplied) * 1000
+                    ) / 1000}
                   </td>
                   <td>{Math.round(transaction.chargeApplied * 1000) / 1000}</td>
                   <td
-                    className={`border-l-4 border-white text-white ${transaction.action === "BUY"
-                      ? "bg-green-500"
-                      : "bg-red-500"
-                      } `}
+                    className={`border-l-4 border-white text-white ${
+                      transaction.action === "BUY"
+                        ? "bg-green-500"
+                        : "bg-red-500"
+                    } `}
                   >
                     {transaction.action}
                   </td>
@@ -290,18 +298,18 @@ function BundlePage() {
           primaryBtnDisable={disableSellBundleBtn}
         >
           <>
-            <div className="flex flex-row justify-center w-full gap-4 align-middle">
+            <div className="flex flex-row justify-center text-white bg-primaryPurple rounded-t-lg w-full gap-4 align-middle">
               <img
                 src={Alpha}
                 alt="cryptocurrency image"
-                width={"32px"}
-                className="invert "
+                width={"56px"}
+                className=" "
               />
               <h1 className="font-bold text-3xl my-auto">
                 {bundleDesc.bundleName}
               </h1>
             </div>
-            <div className="grid grid-cols-2 gap-4 my-4 px-8 mx-6">
+            <div className="grid grid-cols-2 gap-4 4 p-8 bg-primaryLight rounded-b-lg ">
               <p>Amount you get :</p>
               <p>{purchasePrice}</p>
 

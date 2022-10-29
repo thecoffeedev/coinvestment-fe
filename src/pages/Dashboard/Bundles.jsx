@@ -34,6 +34,7 @@ import usd_coin from "../../assets/usd-coin.png";
 import wrapped_bitcoin from "../../assets/wrapped-bitcoin.png";
 import Modal from "../../components/Modal/Modal";
 import dynamicBundleImages from "../../helpers/dynamicBundleImages";
+import dynamicCoinImages from "../../helpers/dynamicCoinImages";
 
 
 function Bundles() {
@@ -52,7 +53,9 @@ function Bundles() {
 
 
   return <Dashboard>
-    <div className="w-full h-full px-4 py-20 my-auto">
+    <div className="w-full h-full px-4 py-4 my-auto">
+    <h1 className="text-4xl font-bold text-center mb-4">Cryptocurrency Bundles</h1>
+
       <div className="grid gap-4 grid-cols-3 p-4 max-w-5xl mx-auto border border-blue-200 shadow-2xl rounded-xl shadow-indigo-300">
 
         {bundles.length > 0 && bundles.map((bundle, index) => (
@@ -63,8 +66,10 @@ function Bundles() {
               <h1 className=" font-semibold text-xl uppercase">{bundle.bundleName}</h1>
             </div>
             <div className="py-4 flex -space-x-2">
-              <img src={bitcoin} alt="" className="w-8 rounded-full" />
-              <img src={ethereum} alt="" className="w-8 bg-white rounded-full shadow-lg" />
+              {bundle.bundleCryptocurrencies?.map((coin, index) =>  (
+
+              <img key={index} src={dynamicCoinImages(coin.cryptocurrencyCode)} alt="" className="w-8 bg-white rounded-full shadow-lg" />
+              ))}
             </div>
             <h1 className="text-center underline">Learn more</h1>
           </div>

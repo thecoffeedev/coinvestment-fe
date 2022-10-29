@@ -4,6 +4,7 @@ import { userLogout } from "../../apis/user";
 import ProfilePicture from "../../assets/defaultProfile.png";
 import Logo from "../../assets/logo.svg";
 import LogoutIcon from "../../assets/logout.png";
+import Axios from "../../utils/Axios";
 import { UserContext } from "../../utils/UserContext";
 
 function Header() {
@@ -17,6 +18,9 @@ function Header() {
     const page = location.pathname.split("/")[2];
     setCurrentPage(page);
     console.log(contextUser);
+    Axios.defaults.headers.common = {
+      Authorization: `Bearer ${contextUser.authToken}`,
+    };
   }, []);
 
   const handleUserLogout = () => {

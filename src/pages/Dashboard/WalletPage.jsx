@@ -6,6 +6,7 @@ import Dashboard from ".";
 import { getSingleWallet } from "../../apis/account";
 import { sellWallet } from "../../apis/wallet";
 import Modal from "../../components/Modal/Modal";
+import { Toastify } from "../../utils/Toast";
 
 const WalletPage = () => {
   const params = useParams();
@@ -38,7 +39,7 @@ const WalletPage = () => {
   }, []);
 
   const handleSellWallet = () => {
-    setDisableSellWalletBtn(true);
+    // setDisableSellWalletBtn(true);
     sellWallet({
       walletAddress: walletData.walletAddress,
       initialRate: coin?.market_data?.current_price?.gbp,
@@ -47,26 +48,30 @@ const WalletPage = () => {
       expiry: sellWalletObj.expiry,
       amount: sellWalletObj.units * coin?.market_data?.current_price?.gbp,
     }).then((res) => {
-      console.log(res);
-      setSellWalletObj({
-        units: 0,
-        cardNumber: "",
-        expiry: "",
-      });
-      setDisableSellWalletBtn(false);
-      setSellWalletModal(false);
-      getSingleWallet(params.walletAddress).then((res) => {
-        setWalletData(res.data.wallet);
-        setWalletTransactions(res.data.walletTransactions);
-        axios
-          .get(`${url}/${res.data.wallet.cryptocurrencyCode}`)
-          .then((response) => {
-            setCoin(response.data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
+      if (res.data.status.statusCode === "FAILURE") {
+        Toastify("error", res.data.status.statusMessage);
+      } else {
+        // setDisableSellWalletBtn(false);
+        setSellWalletModal(false);
+        Toastify("success", res.data.status.statusMessage);
+        setSellWalletObj({
+          units: 0,
+          cardNumber: "",
+          expiry: "",
+        });
+        getSingleWallet(params.walletAddress).then((res) => {
+          setWalletData(res.data.wallet);
+          setWalletTransactions(res.data.walletTransactions);
+          axios
+            .get(`${url}/${res.data.wallet.cryptocurrencyCode}`)
+            .then((response) => {
+              setCoin(response.data);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        });
+      }
     });
   };
 
@@ -96,7 +101,7 @@ const WalletPage = () => {
           </div>
           <div className="flex flex-row justify-end">
             <button
-              className=" bg-red-500 text-white font-semibold text-lg rounded-lg px-4 py-1 mr-8"
+              className=" bg-red-500 shadow-lg shadow-red-400 hover:shadow text-white font-semibold text-lg rounded-lg px-4 py-1 mr-8"
               onClick={() => setSellWalletModal(true)}
             >
               Sell
@@ -106,15 +111,28 @@ const WalletPage = () => {
         <div className="w-full max-w-3xl p-6 mx-auto mt-4 text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
           <div className="grid grid-cols-1 sm:grid-cols-2">
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
-              <h1 className="font-bold">Market Price <span className="font-normal">(Per <span className="uppercase">{coin.symbol}</span>)</span></h1>
+              <h1 className="font-bold">
+                Market Price{" "}
+                <span className="font-normal">
+                  (Per <span className="uppercase">{coin.symbol}</span>)
+                </span>
+              </h1>
               <div className="uppercase">
-              &pound;{coin?.market_data?.current_price?.gbp}
+                &pound;{coin?.market_data?.current_price?.gbp}
               </div>
             </div>
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
-              <h1 className="font-bold">24h Price Change <span className="font-normal"></span></h1>
-              <div className={coin?.market_data?.price_change_percentage_24h > 0 ? "text-green-500" : "text-red-500"}>
-              {coin?.market_data?.price_change_percentage_24h}%
+              <h1 className="font-bold">
+                24h Price Change <span className="font-normal"></span>
+              </h1>
+              <div
+                className={
+                  coin?.market_data?.price_change_percentage_24h > 0
+                    ? "text-green-500"
+                    : "text-red-500"
+                }
+              >
+                {coin?.market_data?.price_change_percentage_24h}%
               </div>
             </div>
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
@@ -159,7 +177,9 @@ const WalletPage = () => {
                   <td>{transaction.initialRate}</td>
 
                   <td className="border-white border-x-4">
-                  {Math.round((transaction.amount - transaction.chargeApplied) * 1000) / 1000}
+                    {Math.round(
+                      (transaction.amount - transaction.chargeApplied) * 1000
+                    ) / 1000}
                   </td>
                   <td>{Math.round(transaction.chargeApplied * 1000) / 1000}</td>
                   <td
@@ -187,16 +207,16 @@ const WalletPage = () => {
         primaryBtnDisable={disableSellWalletBtn}
       >
         <>
-          <div className="flex flex-row justify-center w-full gap-4 align-middle">
+          <div className="flex flex-row justify-center w-full gap-4 align-middle py-2 bg-primaryPurple rounded-t-lg">
             <img
               src={coin.image?.small}
               alt="cryptocurrency image"
-              width={"64px"}
+              width={"56px"}
               className=""
             />
             <h1 className="font-bold text-3xl my-auto">{coin.name}</h1>
           </div>
-          <div className="grid grid-cols-2 gap-4 my-4 px-8 mx-6">
+          <div className="grid grid-cols-2 gap-4 p-8 rounded-b-lg bg-primaryLight">
             <p>Balance in {coin.symbol} :</p>
             <p>{walletData.currentBalance}</p>
             <p>Current Transaction Rate :</p>

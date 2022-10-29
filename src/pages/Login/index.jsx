@@ -4,6 +4,7 @@ import { userSignIn } from "../../apis/user";
 import PageCover from "../../assets/login-cover.png";
 import Logo from "../../assets/logo.svg";
 import Axios from "../../utils/Axios";
+import { Toastify } from "../../utils/Toast";
 import { UserContext } from "../../utils/UserContext";
 import "./index.css";
 
@@ -15,20 +16,31 @@ function Login() {
   const [user, setUser] = useState({ emailAddress: "", password: "" });
 
   const handleSubmit = (user) => {
-    userSignIn(user).then((res) => {
-      setContextUser({
-        ...contextUser,
-        authToken: res.data.token,
-        username: res.data.name,
-        email: res.data.emailAddress,
+    userSignIn(user)
+      .then((res) => {
+        if (res.data.status.statusCode === "FAILURE") {
+          Toastify('error', res.data.status.statusMessage)
+        } else {
+          Toastify('success', "Logged in Successfully")
+          setContextUser({
+            ...contextUser,
+            authToken: res.data.token,
+            username: res.data.name,
+            email: res.data.emailAddress,
+          });
+          localStorage.setItem("$AUTH_TOKEN", res.data.token);
+          localStorage.setItem("username", res.data.name);
+          Axios.defaults.headers.common = {
+            Authorization: `Bearer ${res.data.token}`,
+          };
+          navigate("/db/crypto");
+
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        Toastify("error", error);
       });
-      localStorage.setItem("$AUTH_TOKEN", res.data.token);
-      localStorage.setItem("username", res.data.name);
-      Axios.defaults.headers.common = {
-        Authorization: `Bearer ${res.data.token}`,
-      };
-      navigate("/db/crypto");
-    });
   };
 
   return (
@@ -42,7 +54,7 @@ function Login() {
             src={Logo}
             alt="coinvestment logo"
             width="56px"
-          // className="border-primaryPurple border-2 border-opacity-60 rounded-lg"
+            // className="border-primaryPurple border-2 border-opacity-60 rounded-lg"
           />
           <h1 className="title-coin font-bold my-auto text-primaryDark">
             COINVESTMENT
