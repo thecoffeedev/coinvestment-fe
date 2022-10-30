@@ -19,11 +19,11 @@ function Account() {
   const walletsRequest = () => {
     console.log("authToken:::", contextUser.authToken);
     getWallets().then((res) => {
-      setWalletsData(res.data.wallet);
+      setWalletsData(res.data.wallet || []);
       setIsLoadingWallets(false);
     });
     getBundles().then((res) => {
-      setBundlesData(res.data.bundles);
+      setBundlesData(res.data.bundles || []);
       setIsLoadingBundles(false);
     });
   };
@@ -45,7 +45,7 @@ function Account() {
             </div>
           ) : isLoadingWallets === false && walletsData?.length === 0 ? (
             <div className="grid place-items-center h-full w-full">
-              <h1 className="text-xl text-center">
+              <h1 className="text-lg my-16 text-center text-gray-500">
                 You have bought no Wallets. Please continue{" "}
                 <Link to="/db/crypto" className="text-primaryPurple">
                   here
@@ -70,9 +70,9 @@ function Account() {
             <div className="grid place-items-center h-full w-full">
               <HashLoader color="#5050ff" size={86} />
             </div>
-          ) : isLoadingBundles === false && bundlesData?.length === 0 ? (
+          ) : bundlesData?.length === 0 ? (
             <div className="grid place-items-center h-full w-full">
-              <h1 className="text-xl text-center">
+              <h1 className="text-lg my-16 text-center text-gray-500">
                 You have bought no Bundles. Please continue{" "}
                 <Link to="/db/bundles" className="text-primaryPurple">
                   here
