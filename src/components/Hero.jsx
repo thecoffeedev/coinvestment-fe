@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { animateScroll as scroll, Link } from 'react-scroll';
 import Logo from "../assets/logo.svg";
 import macImg from "../assets/Macbook-Pro.png";
-import { Link, animateScroll as scroll } from 'react-scroll'
 
-const Hero = () => {
+const Hero = (props) => {
   const navigate = useNavigate();
   return (
     <div className=" h-screen w-screen px-4 py-8 text-primaryLight bg-[#50f]">
@@ -31,12 +31,22 @@ const Hero = () => {
             <a className="opacity-80 hover:opacity-100" href="/">
               <Link to="faq" smooth={true} offset={0} duration={1000}>FAQ</Link>
             </a>
+            {props.isLoggedIn ? 
             <button
-              className="border border-white px-3 rounded-md hover:bg-white hover:bg-opacity-10 shadow-xl hover:shadow-none py-1"
+            className="border border-white px-3 rounded-md hover:bg-white hover:text-primaryPurple font-semibold   shadow-xl hover:shadow-none py-1"
+            onClick={() => navigate("/db/crypto")}
+          >
+            Dashboard
+          </button>
+            : 
+            
+            <button
+              className="border border-white px-3 rounded-md hover:bg-white hover:text-primaryPurple font-semibold shadow-xl hover:shadow-none py-1"
               onClick={() => navigate("/login")}
             >
               Login
             </button>
+            }
           </div>
         </div>
         <div className="flex justify-center items-center h-[60%]">

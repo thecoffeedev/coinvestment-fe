@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { HashLoader } from "react-spinners";
 import Dashboard from ".";
 import { getBundles } from "../../apis/account";
 import { getSingleBundle, sellBundle } from "../../apis/bundle";
@@ -29,41 +30,46 @@ function BundlePage() {
     cardNumber: "",
     expiry: "",
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getSingleBundle(params.bundleAddress).then((res) => {
-      setBundleData(res.data.bundle);
-      setBundleTransactions(res.data.bundleTransaction);
-      setPurchaseCut(
-        (res.data.bundleTransaction.amount /
-          res.data.bundleTransaction.initialRate) *
-          100
-      );
-      getBundles().then((res) => {
-        setBundleDesc(
-          res.data.bundles.find(
-            (bundle) => bundle.bundleAddress === params.bundleAddress
-          )
+    getSingleBundle(params.bundleAddress)
+      .then((res) => {
+        setBundleData(res.data.bundle);
+        setBundleTransactions(res.data.bundleTransaction);
+        setPurchaseCut(
+          (res.data.bundleTransaction.amount /
+            res.data.bundleTransaction.initialRate) *
+            100
         );
-        res.data.bundles
-          .find((bundle) => bundle.bundleAddress === params.bundleAddress)
-          .bundleCryptocurrencies?.map((currency) => {
-            axios
-              .get(`${url}/${currency.cryptocurrencyCode}`)
-              .then((response) => {
-                setCoins((prev) => {
-                  if (prev.find((e) => response.data.id === e.id)) {
-                    return prev;
-                  }
-                  return [...prev, response.data];
+        getBundles().then((res) => {
+          setBundleDesc(
+            res.data.bundles.find(
+              (bundle) => bundle.bundleAddress === params.bundleAddress
+            )
+          );
+          res.data.bundles
+            .find((bundle) => bundle.bundleAddress === params.bundleAddress)
+            .bundleCryptocurrencies?.map((currency) => {
+              axios
+                .get(`${url}/${currency.cryptocurrencyCode}`)
+                .then((response) => {
+                  setCoins((prev) => {
+                    if (prev.find((e) => response.data.id === e.id)) {
+                      return prev;
+                    }
+                    return [...prev, response.data];
+                  });
+                })
+                .catch((error) => {
+                  console.log(error);
                 });
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          });
+            });
+        });
+      })
+      .then((res) => {
+        setIsLoading(false);
       });
-    });
   }, []);
 
   useEffect(() => {
@@ -77,7 +83,7 @@ function BundlePage() {
       let totalPrice;
       totalPrice = newData.reduce(
         (currTotal, value) =>
-          currTotal + (value.percentage / 100) * value.currentPrice,
+          currTotal + +value.currentPrice.toString().split("e")[0],
         0
       );
       setMarketRate(totalPrice);
@@ -92,8 +98,14 @@ function BundlePage() {
     sellBundle({
       bundleAddress: bundleData.bundleAddress,
       bundleID: bundleData.bundleID,
-      initialRate: purchasePrice,
-      amount: purchasePrice,
+      initialRate: marketRate,
+      amount:
+        Math.round(
+          ((bundleTransactions[bundleTransactions?.length - 1]?.amount *
+            marketRate) /
+            bundleTransactions[bundleTransactions?.length - 1]?.initialRate) *
+            10000
+        ) / 10000,
       cardNumber: sellBundleObj.cardNumber,
       expiry: sellBundleObj.expiry,
     }).then((res) => {
@@ -139,6 +151,16 @@ function BundlePage() {
     });
   };
 
+  if (isLoading || coins.length !== bundleDesc.bundleCryptocurrencies?.length) {
+    return (
+      <Dashboard>
+        <div className="grid place-items-center h-[90vh] w-full">
+          <HashLoader color="#5050ff" size={86} />
+        </div>
+      </Dashboard>
+    );
+  }
+
   return (
     <Dashboard>
       <div className=" w-full max-w-3xl p-8 mx-auto text-center text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
@@ -174,7 +196,16 @@ function BundlePage() {
                 Balance
               </p>
               <h1 className="text-5xl my-auto font-medium w-fit">
-                &pound;{Math.round(purchasePrice * 10000) / 10000}
+                &pound;
+                {purchasePrice &&
+                  Math.round(
+                    ((bundleTransactions[bundleTransactions?.length - 1]
+                      ?.amount *
+                      marketRate) /
+                      bundleTransactions[bundleTransactions?.length - 1]
+                        ?.initialRate) *
+                      10000
+                  ) / 10000}
               </h1>
             </div>
           </div>
@@ -196,8 +227,14 @@ function BundlePage() {
               <div>&pound;{Math.round(marketRate * 10000) / 10000}</div>
             </div>
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
-              <h1 className="font-bold">Units Available</h1>
-              <div>{1}</div>
+              <h1 className="font-bold">Initial Rate</h1>
+              <div>
+                &pound;
+                {
+                  bundleTransactions[bundleTransactions?.length - 1]
+                    ?.initialRate
+                }
+              </div>
             </div>
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
               <h1 className="font-bold">Holding Period</h1>
@@ -311,32 +348,35 @@ function BundlePage() {
             </div>
             <div className="grid grid-cols-2 gap-4 4 p-8 bg-primaryLight rounded-b-lg ">
               <p>Amount you get :</p>
-              <p>{purchasePrice}</p>
+              <p>
+                &pound;
+                {Math.round(
+                  ((bundleTransactions[bundleTransactions?.length - 1]?.amount *
+                    marketRate) /
+                    bundleTransactions[bundleTransactions?.length - 1]
+                      ?.initialRate) *
+                    10000
+                ) / 10000}
+              </p>
+              <p>Bundle Rate :</p>
+              <p>&pound;{Math.round(marketRate * 10000) / 10000}</p>
 
               {/* <p>Sell Amount (&pound;) :</p>
               <input
-                type="number"
-                min={0}
-                placeholder="Enter amount"
-                className="border-2 rounded-sm px-2 h-7"
-                defaultValue={sellBundleObj.amount}
-                onChange={(e) =>
-                  setSellBundleObj((prev) => {
-                    return { ...prev, amount: e.target.value };
-                  })
-                }
+              type="number"
+              min={0}
+              placeholder="Enter amount"
+              className="border-2 rounded-sm px-2 h-7"
+              defaultValue={sellBundleObj.amount}
+              onChange={(e) =>
+                setSellBundleObj((prev) => {
+                  return { ...prev, amount: e.target.value };
+                })
+              }
               /> */}
 
-              <p>Sell Units :</p>
-              <p>{1}</p>
-              <p className="col-span-2 bg-green-300 border-2 rounded-md px-2 text-center text-sm">
-                Balance will change according to the market data every 30 sec.
-              </p>
-              <p className="col-span-2 border-2 bg-red-300 px-2 rounded-md text-sm text-center">
-                <strong>Note : </strong>If you sold before the minimum holding
-                period, 10% of the amount will be charged.
-              </p>
-              <hr className="col-span-2" />
+              {/* <p>Sell Units :</p>
+              <p>{1}</p> */}
               <h1 className="font-bold text-xl col-span-2">
                 Credit / Debit card Details
               </h1>
@@ -365,6 +405,14 @@ function BundlePage() {
                   })
                 }
               />
+              <p className="col-span-2 bg-green-300 border-2 rounded-md px-2 text-center text-sm">
+                Balance will change according to the market data every 30 sec.
+              </p>
+              <p className="col-span-2 border-2 bg-red-300 px-2 rounded-md text-sm text-center">
+                <strong>Note : </strong>If you sold before the minimum holding
+                period, 10% of the amount will be charged.
+              </p>
+              <hr className="col-span-2" />
             </div>
           </>
         </Modal>

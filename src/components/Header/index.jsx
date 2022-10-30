@@ -34,7 +34,7 @@ function Header() {
     <div className="h-12 bg-[#3F0071] flex flex-row align-middle px-8 gap-12">
       <div className="flex flex-row align-middle gap-4">
         <img src={Logo} alt="coinvestment logo" width="34px" />
-        <h1 className="font-bold my-auto text-[#FFF7E9] text-2xl">
+        <h1 className="font-bold my-auto text-[#FFF7E9] text-2xl hover:cursor-pointer" onClick={() => navigate('/')}>
           COINVESTMENT
         </h1>
       </div>

@@ -2,29 +2,33 @@ import axios from "axios";
 import DOMPurify from "dompurify";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { HashLoader } from "react-spinners";
 import Dashboard from ".";
 import { buyWallet } from "../../apis/wallet";
 import Modal from "../../components/Modal/Modal";
 import { Toastify } from "../../utils/Toast";
+
 
 const Coin = (props) => {
   const params = useParams();
   const [coin, setCoin] = useState([]);
   const url = `https://api.coingecko.com/api/v3/coins/${params.coinId}`;
   const [buyObject, setBuyObject] = useState({
-    units: 0,
+    amount: 0,
     minHoldingPeriod: 18,
     cardNumber: "",
     expiry: "",
   });
   const [CoinModal, setCoinModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true)
+
 
   useEffect(() => {
     axios
       .get(url)
       .then((response) => {
         setCoin(response.data);
-      })
+      }).then(res => setIsLoading(false))
       .catch((error) => {
         console.log(error);
       });
@@ -32,11 +36,11 @@ const Coin = (props) => {
 
   const handleBuyCoin = () => {
     buyWallet({
-      initialBalance: buyObject.units,
+      initialBalance: buyObject.amount / coin.market_data.current_price.gbp ,
       cryptocurrencyCode: coin.id,
       holdingPeriod: buyObject.minHoldingPeriod,
       initialRate: coin.market_data.current_price.gbp,
-      amount: coin.market_data.current_price.gbp * buyObject.units,
+      amount: buyObject.amount,
       cardNumber: buyObject.cardNumber,
       expiry: buyObject.expiry,
     }).then((res) => {
@@ -60,6 +64,17 @@ const Coin = (props) => {
       }
     });
   };
+
+  if (isLoading) {
+    return (
+      <Dashboard>
+        <div className="grid place-items-center h-[90vh] w-full">
+          <HashLoader color="#5050ff" size={86} />
+        </div>
+      </Dashboard>
+    );
+  }
+
 
   return (
     <Dashboard>
@@ -236,26 +251,25 @@ const Coin = (props) => {
           <p>Market Price :</p>
           <p>&pound;{coin?.market_data?.current_price.gbp}</p>
 
-          <p>Buy Units :</p>
+          <p>Amount (£) :</p>
           <input
             type="number"
             min={0}
-            placeholder="Enter units"
+            placeholder="Enter amount"
             className="border-2 rounded-sm px-2 h-7"
-            value={buyObject.units}
+            value={buyObject.amount}
             onChange={(e) =>
               setBuyObject((prev) => {
-                return { ...prev, units: e.target.value };
+                return { ...prev, amount: e.target.value };
               })
             }
           />
 
-          <p>Amount :</p>
+          <p>Units :</p>
           <p>
-            {buyObject.units
+            {buyObject.amount
               ? Math.round(
-                  buyObject.units *
-                    coin?.market_data?.current_price?.gbp *
+                  (buyObject.amount / coin?.market_data?.current_price?.gbp  ) *
                     10000
                 ) / 10000
               : 0}

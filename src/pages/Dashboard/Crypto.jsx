@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { HashLoader } from "react-spinners";
 import Dashboard from ".";
 import CoinItem from "../../components/CoinItem";
 import Coin from "./Coin";
@@ -8,6 +9,7 @@ import Coin from "./Coin";
 const Coins = (props) => {
   const [coins, setCoins] = useState([]);
   const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   console.log(search);
   const url =
     "https://api.coingecko.com/api/v3/coins/markets?vs_currency=gbp&order=market_cap_desc&per_page=50&page=1&sparkline=false";
@@ -18,6 +20,7 @@ const Coins = (props) => {
       .then((response) => {
         setCoins(response.data);
       })
+      .then((res) => setIsLoading(false))
       .catch((error) => {
         console.log(error);
       });
@@ -26,7 +29,9 @@ const Coins = (props) => {
   return (
     <Dashboard>
       <div className="w-full px-2 py-4 text-sm sm:text-lg ">
-      <h1 className="text-4xl font-bold text-center mb-4">Cryptocurrencies</h1>
+        <h1 className="text-4xl font-bold text-center mb-4">
+          Cryptocurrencies
+        </h1>
         <div className="max-w-5xl px-4 mx-auto text-gray-900 border border-indigo-200 shadow-2xl rounded-xl shadow-indigo-300">
           <div className="w-full">
             <input
@@ -46,7 +51,11 @@ const Coins = (props) => {
             <p className="hidden md:flex">Volume</p>
             <p className="hidden md:flex">Market Capital</p>
           </div>
-
+          {isLoading && (
+            <div className="grid place-items-center h-[20vh] w-full col-span-3">
+              <HashLoader color="#5050ff" size={64} />
+            </div>
+          )}
           {coins
             .filter((coins) => {
               return search.toLowerCase() === ""

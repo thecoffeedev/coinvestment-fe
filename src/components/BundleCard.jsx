@@ -11,7 +11,7 @@ function BundleCard({ bundleObject }) {
 
   return (
     <div
-      className="card border bg-blue-50 rounded-lg mx-auto w-[96%] py-2 px-4 hover:cursor-pointer"
+      className="card border border-purple-300 shadow-lg shadow-violet-200 bg-violet-50 rounded-lg mx-auto w-[96%] py-2 px-4 hover:cursor-pointer"
       onClick={() =>
         navigate(`/db/account/bundle/${bundleObject.bundleAddress}`)
       }
@@ -29,7 +29,7 @@ function BundleCard({ bundleObject }) {
           className="invert"
           width={"48px"}
         /> */}
-             <img src={dynamicBundleImages(bundleObject.bundleName)} alt="alpha" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
+             <img src={dynamicBundleImages(bundleObject.bundleName)} alt="coin" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
         <h1 className="text-2xl my-auto">{bundleObject.bundleName}</h1>
       </div>
       <div className="flex flex-col mt-2">

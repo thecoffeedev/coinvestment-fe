@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userSignIn } from "../../apis/user";
 import PageCover from "../../assets/login-cover.png";
@@ -19,9 +19,9 @@ function Login() {
     userSignIn(user)
       .then((res) => {
         if (res.data.status.statusCode === "FAILURE") {
-          Toastify('error', res.data.status.statusMessage)
+          Toastify("error", res.data.status.statusMessage);
         } else {
-          Toastify('success', "Logged in Successfully")
+          Toastify("success", "Logged in Successfully");
           setContextUser({
             ...contextUser,
             authToken: res.data.token,
@@ -34,7 +34,6 @@ function Login() {
             Authorization: `Bearer ${res.data.token}`,
           };
           navigate("/db/crypto");
-
         }
       })
       .catch((error) => {

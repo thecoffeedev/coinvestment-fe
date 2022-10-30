@@ -1,11 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { HashLoader } from "react-spinners";
 import Dashboard from ".";
 import { buyBundle, getAllBundles } from "../../apis/bundle";
 import Modal from "../../components/Modal/Modal";
 import dynamicBundleImages from "../../helpers/dynamicBundleImages";
 import { Toastify } from "../../utils/Toast";
+
 
 function BundleBuyPage() {
   const navigate = useNavigate();
@@ -23,7 +25,9 @@ function BundleBuyPage() {
     minHoldingPeriod: 18,
     cardNumber: "",
     expiry: "",
+    amount: ""
   });
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     getAllBundles().then((res) => {
@@ -55,6 +59,7 @@ function BundleBuyPage() {
   useEffect(() => {
     if (bundleDesc.bundleCryptocurrencies?.length === coins?.length) {
       console.log("coins::", coins);
+      setIsLoading(false)
       const newData = bundleDesc.bundleCryptocurrencies.map((cur) => {
         cur.currentPrice = coins.find(
           (el) => el.id === cur.cryptocurrencyCode
@@ -64,7 +69,7 @@ function BundleBuyPage() {
       let totalPrice, totalPercentage;
       totalPrice = newData.reduce(
         (currTotal, value) =>
-          currTotal + (value.percentage / 100) * value.currentPrice,
+          currTotal + +(value.currentPrice.toString().split('e')[0]),
         0
       );
       totalPercentage = newData.reduce(
@@ -85,7 +90,7 @@ function BundleBuyPage() {
       bundleID: bundleDesc.bundleID,
       holdingPeriod: +buyObject.minHoldingPeriod,
       initialRate: purchasePrice,
-      amount: purchasePrice,
+      amount: buyObject.amount,
       cardNumber: buyObject.cardNumber,
       expiry: buyObject.expiry,
     })
@@ -112,6 +117,16 @@ function BundleBuyPage() {
         Toastify("error", error);
       });
   };
+
+  if (isLoading) {
+    return (
+      <Dashboard>
+        <div className="grid place-items-center h-[90vh] w-full">
+          <HashLoader color="#5050ff" size={86} />
+        </div>
+      </Dashboard>
+    );
+  }
 
   return (
     <Dashboard>
@@ -167,7 +182,7 @@ function BundleBuyPage() {
               <div>{bundleDesc?.minimumHoldingPeriod} Months</div>
             </div>
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
-              <h1 className="font-bold">Min holding period</h1>
+              <h1 className="font-bold">Max holding period</h1>
               <div>36 Months</div>
             </div>
             <div className="flex justify-between p-2 m-2 border border-blue-200 rounded-md bg-blue-50 ">
@@ -215,7 +230,7 @@ function BundleBuyPage() {
           title={`Buy Bundle`}
           onClose={() => setSellBundleModal(false)}
           show={sellBundleModal}
-          actionBtn={`Sell ${bundleDesc.bundleName}`}
+          actionBtn={`Buy ${bundleDesc.bundleName}`}
           submitAction={handleBuyBundle}
           primaryBtnDisable={disableSellBundleBtn}
         >
@@ -231,11 +246,19 @@ function BundleBuyPage() {
               </h1>
             </div>
             <div className="grid grid-cols-2 gap-4 py-4 px-8  bg-primaryLight rounded-b-lg">
-              <p>Amount you get :</p>
-              <p>{purchasePrice}</p>
-
-              <p>Buy Units :</p>
-              <p>{1}</p>
+              <p>Amount (£) :</p>
+              <input
+                type="text"
+                placeholder="Enter the amount to buy"
+                className="border-2 rounded-lg px-2 h-7"
+                defaultValue={buyObject.amount}
+                onChange={(e) =>
+                  setBuyObject((prev) => {
+                    return { ...prev, amount: e.target.value };
+                  })
+                }
+              />
+              {/* <p>{purchasePrice}</p> */}
               <p>Holding period (In Months) :</p>
               <div className="flex flex-row gap-2 align-middle">
                 <div className="w-8">{buyObject.minHoldingPeriod}</div>

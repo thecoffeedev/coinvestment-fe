@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { HashLoader } from "react-spinners";
 import Dashboard from ".";
 import { getAllBundles } from "../../apis/bundle";
 import algorand from "../../assets/algorand.png";
@@ -38,48 +39,85 @@ import dynamicCoinImages from "../../helpers/dynamicCoinImages";
 
 
 function Bundles() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [bundleModal, setBundleModal] = useState(false)
+  const [bundleModal, setBundleModal] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [bundles, setBundles] = useState([]);
 
   useEffect(() => {
     getAllBundles()
       .then((res) => setBundles(res.data.availableBundles))
+      .then((res) => setIsLoading(false))
       .catch((error) => console.error(error));
   }, []);
 
+  if (isLoading) {
+    return (
+      <Dashboard>
+        <div className="w-full h-full px-4 py-4 my-auto">
+          <h1 className="text-4xl font-bold text-center mb-4">
+            Cryptocurrency Bundles
+          </h1>
 
-  return <Dashboard>
-    <div className="w-full h-full px-4 py-4 my-auto">
-    <h1 className="text-4xl font-bold text-center mb-4">Cryptocurrency Bundles</h1>
-
-      <div className="grid gap-4 grid-cols-3 p-4 max-w-5xl mx-auto border border-blue-200 shadow-2xl rounded-xl shadow-indigo-300">
-
-        {bundles.length > 0 && bundles.map((bundle, index) => (
-          <div key={index} onClick={() => { navigate(`/db/bundles/${bundle.bundleName}`) }} className="p-4 border cursor-pointer hover:from-indigo-300 border-indigo-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
-          w-full">
-            <div className=" flex items-center">
-              <img src={dynamicBundleImages(bundle.bundleName)} alt="alpha" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
-              <h1 className=" font-semibold text-xl uppercase">{bundle.bundleName}</h1>
+          <div className="grid gap-4 grid-cols-3 p-4 max-w-5xl mx-auto border border-blue-200 shadow-2xl rounded-xl shadow-indigo-300">
+            <div className="grid place-items-center h-[20vh] w-full col-span-3">
+              <HashLoader color="#5050ff" size={64} />
             </div>
-            <div className="py-4 flex -space-x-2">
-              {bundle.bundleCryptocurrencies?.map((coin, index) =>  (
-
-              <img key={index} src={dynamicCoinImages(coin.cryptocurrencyCode)} alt="" className="w-8 bg-white rounded-full shadow-lg" />
-              ))}
-            </div>
-            <h1 className="text-center underline">Learn more</h1>
           </div>
-        ))}
+        </div>
+      </Dashboard>
+    );
+  }
 
-        {/* <hr className="col-span-3" /> */}
+  return (
+    <Dashboard>
+      <div className="w-full h-full px-4 py-4 my-auto">
+        <h1 className="text-4xl font-bold text-center mb-4">
+          Cryptocurrency Bundles
+        </h1>
 
+        <div className="grid gap-4 grid-cols-3 p-4 max-w-5xl mx-auto border border-blue-200 shadow-2xl rounded-xl shadow-indigo-300">
+          {bundles.length > 0 &&
+            bundles.map((bundle, index) => (
+              <div
+                key={index}
+                onClick={() => {
+                  navigate(`/db/bundles/${bundle.bundleName}`);
+                }}
+                className="p-4 border cursor-pointer hover:from-indigo-300 border-indigo-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+          w-full"
+              >
+                <div className=" flex items-center">
+                  <img
+                    src={dynamicBundleImages(bundle.bundleName)}
+                    alt="alpha"
+                    className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple"
+                  />
+                  <h1 className=" font-semibold text-xl uppercase">
+                    {bundle.bundleName}
+                  </h1>
+                </div>
+                <div className="py-4 flex -space-x-2">
+                  {bundle.bundleCryptocurrencies?.map((coin, index) => (
+                    <img
+                      key={index}
+                      src={dynamicCoinImages(coin.cryptocurrencyCode)}
+                      alt=""
+                      className="w-8 bg-white rounded-full shadow-lg"
+                    />
+                  ))}
+                </div>
+                <h1 className="text-center underline">Learn more</h1>
+              </div>
+            ))}
 
-        {/* Alpha Pack */}
-        {/* <div onClick={() => { setBundleModal(true) }} className="p-4 border cursor-pointer hover:from-indigo-300 border-indigo-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+          {/* <hr className="col-span-3" /> */}
+
+          {/* Alpha Pack */}
+          {/* <div onClick={() => { setBundleModal(true) }} className="p-4 border cursor-pointer hover:from-indigo-300 border-indigo-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
          w-full">
           <div className=" flex items-center">
             <img src={alpha} alt="alpha" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
@@ -92,8 +130,8 @@ function Bundles() {
           <h1 className="text-center underline">Learn more</h1>
         </div> */}
 
-        {/* Beta Pack */}
-        {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+          {/* Beta Pack */}
+          {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
          w-full">
           <div className=" flex items-center">
             <img src={beta} alt="beta" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
@@ -109,8 +147,8 @@ function Bundles() {
           <h1 className="text-center underline">Learn more</h1>
         </div> */}
 
-        {/* Sigma Pack */}
-        {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+          {/* Sigma Pack */}
+          {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
          w-full">
           <div className=" flex items-center">
             <img src={sigma} alt="sigma" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
@@ -125,8 +163,8 @@ function Bundles() {
           <h1 className="text-center underline">Learn more</h1>
         </div> */}
 
-        {/* Mu Pack */}
-        {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+          {/* Mu Pack */}
+          {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
          w-full">
           <div className=" flex items-center">
             <img src={mu} alt="mu" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
@@ -142,8 +180,8 @@ function Bundles() {
           <h1 className="text-center underline">Learn more</h1>
         </div> */}
 
-        {/* Omega Pack */}
-        {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+          {/* Omega Pack */}
+          {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
          w-full">
           <div className=" flex items-center">
             <img src={omega} alt="omega" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
@@ -157,8 +195,8 @@ function Bundles() {
           <h1 className="text-center underline">Learn more</h1>
         </div> */}
 
-        {/* Pi Pack */}
-        {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
+          {/* Pi Pack */}
+          {/* <div className="p-4 border cursor-pointer hover:from-indigo-300 border-blue-200 rounded-xl bg-gradient-to-br from-indigo-200 to-white text-primaryPurple
          w-full">
           <div className=" flex items-center">
             <img src={pi} alt="pi" className="mr-4 rounded bg-primaryPurple shadow shadow-primaryPurple" />
@@ -173,64 +211,90 @@ function Bundles() {
           </div>
           <h1 className="text-center underline">Learn more</h1>
         </div> */}
-
-
-      </div>
-    </div>
-    {/* Bundles Modal */}
-    <Modal
-      // title="Bundle Name"
-      onClose={() => setBundleModal(false)}
-      show={bundleModal}
-      actionBtn="Buy"
-      submitAction={() => { setTransactionModal(true); setBundleModal(false) }}
-    >
-      <div className=" flex bg-primaryPurple rounded-t-lg text-white py-4">
-        <div className=" flex items-center mx-auto">
-          <img src={alpha} alt="alpha" className="mr-4 rounded bg-primaryPurple shadow-lg " />
-          <h1 className=" font-semibold text-xl">ALPHA PACK</h1>
         </div>
       </div>
-      <div className="w-full flex text-primaryDark bg-indigo-100 rounded-b-lg">
-        <div className="w-2/4 p-8">
-          <h1 className=" font-bold text-xl my-2">About</h1>
-          <div className="space-y-4 text-gray-600 text-justify">
-            <p>This bundle is for those that want to dip their toes into crypto-currency investment with the lowest of risks. The bundle contains an equal split in terms of value, of Bitcoin and Ethereum.</p>
-            <p>This bundle is for those that want to dip their toes into crypto-currency investment with the lowest of risks. The bundle contains an equal split in terms of value, of Bitcoin and Ethereum.</p>
-            <p>This bundle is for those that want to dip their toes into crypto-currency investment with the lowest of risks. The bundle contains an equal split in terms of value, of Bitcoin and Ethereum.</p>
+      {/* Bundles Modal */}
+      <Modal
+        // title="Bundle Name"
+        onClose={() => setBundleModal(false)}
+        show={bundleModal}
+        actionBtn="Buy"
+        submitAction={() => {
+          setTransactionModal(true);
+          setBundleModal(false);
+        }}
+      >
+        <div className=" flex bg-primaryPurple rounded-t-lg text-white py-4">
+          <div className=" flex items-center mx-auto">
+            <img
+              src={alpha}
+              alt="alpha"
+              className="mr-4 rounded bg-primaryPurple shadow-lg "
+            />
+            <h1 className=" font-semibold text-xl">ALPHA PACK</h1>
           </div>
         </div>
-        <div className="w-2/4 p-8 bg-indigo-200 rounded-br-lg">
-          <h1 className=" font-bold text-xl my-2">Bundle Composition</h1>
-          <div className="flex my-8 text-gray-600">
-            <div className="text-center p-2 w-20">
-              <img src={bitcoin} alt="" className="w-8 rounded-full shadow-lg mx-auto mb-2" />
-              <div className="text-sm">
-                <p>Bitcoin</p>
-                <p>50%</p>
-              </div>
+        <div className="w-full flex text-primaryDark bg-indigo-100 rounded-b-lg">
+          <div className="w-2/4 p-8">
+            <h1 className=" font-bold text-xl my-2">About</h1>
+            <div className="space-y-4 text-gray-600 text-justify">
+              <p>
+                This bundle is for those that want to dip their toes into
+                crypto-currency investment with the lowest of risks. The bundle
+                contains an equal split in terms of value, of Bitcoin and
+                Ethereum.
+              </p>
+              <p>
+                This bundle is for those that want to dip their toes into
+                crypto-currency investment with the lowest of risks. The bundle
+                contains an equal split in terms of value, of Bitcoin and
+                Ethereum.
+              </p>
+              <p>
+                This bundle is for those that want to dip their toes into
+                crypto-currency investment with the lowest of risks. The bundle
+                contains an equal split in terms of value, of Bitcoin and
+                Ethereum.
+              </p>
             </div>
-            <div className="text-center p-2 w-20">
-              <img src={ethereum} alt="" className="w-8 rounded-full shadow-lg bg-white mx-auto mb-2" />
-              <div className="text-sm">
-                <p>Ethereum</p>
-                <p>50%</p>
+          </div>
+          <div className="w-2/4 p-8 bg-indigo-200 rounded-br-lg">
+            <h1 className=" font-bold text-xl my-2">Bundle Composition</h1>
+            <div className="flex my-8 text-gray-600">
+              <div className="text-center p-2 w-20">
+                <img
+                  src={bitcoin}
+                  alt=""
+                  className="w-8 rounded-full shadow-lg mx-auto mb-2"
+                />
+                <div className="text-sm">
+                  <p>Bitcoin</p>
+                  <p>50%</p>
+                </div>
+              </div>
+              <div className="text-center p-2 w-20">
+                <img
+                  src={ethereum}
+                  alt=""
+                  className="w-8 rounded-full shadow-lg bg-white mx-auto mb-2"
+                />
+                <div className="text-sm">
+                  <p>Ethereum</p>
+                  <p>50%</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </Modal>
-    <Modal
-      title="Transaction Details"
-      onClose={() => setTransactionModal(false)}
-      show={transactionModal}
-      actionBtn="Buy"
-    >
-
-
-    </Modal>
-  </Dashboard>;
+      </Modal>
+      <Modal
+        title="Transaction Details"
+        onClose={() => setTransactionModal(false)}
+        show={transactionModal}
+        actionBtn="Buy"
+      ></Modal>
+    </Dashboard>
+  );
 }
 
 export default Bundles;
