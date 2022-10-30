@@ -37,7 +37,6 @@ import Modal from "../../components/Modal/Modal";
 import dynamicBundleImages from "../../helpers/dynamicBundleImages";
 import dynamicCoinImages from "../../helpers/dynamicCoinImages";
 
-
 function Bundles() {
   const navigate = useNavigate();
 
@@ -47,11 +46,196 @@ function Bundles() {
 
   const [bundles, setBundles] = useState([]);
 
+  const bundleData = {
+    availableBundles: [
+      {
+        bundleCryptocurrencies: [
+          {
+            cryptocurrencyCode: "bitcoin",
+            cryptocurrencyName: "Bitcoin",
+            percentage: 50,
+          },
+          {
+            cryptocurrencyCode: "ethereum",
+            cryptocurrencyName: "Ethereum",
+            percentage: 50,
+          },
+        ],
+        bundleID: "1",
+        bundleName: "Alpha",
+        minimumHoldingPeriod: 6,
+        riskLevel: "Medium risk",
+        term: "Short term",
+      },
+      {
+        bundleCryptocurrencies: [
+          {
+            cryptocurrencyCode: "bitcoin-cash",
+            cryptocurrencyName: "Bitcoin Cash",
+            percentage: 25,
+          },
+          {
+            cryptocurrencyCode: "tether",
+            cryptocurrencyName: "Tether",
+            percentage: 15,
+          },
+          {
+            cryptocurrencyCode: "ripple",
+            cryptocurrencyName: "XRP",
+            percentage: 15,
+          },
+          {
+            cryptocurrencyCode: "litecoin",
+            cryptocurrencyName: "Litecoin",
+            percentage: 25,
+          },
+          {
+            cryptocurrencyCode: "monero",
+            cryptocurrencyName: "Monero",
+            percentage: 20,
+          },
+        ],
+        bundleID: "2",
+        bundleName: "Beta",
+        minimumHoldingPeriod: 6,
+        riskLevel: "Medium risk",
+        term: "Short term",
+      },
+      {
+        bundleCryptocurrencies: [
+          {
+            cryptocurrencyCode: "dogecoin",
+            cryptocurrencyName: "Dogecoin",
+            percentage: 20,
+          },
+          {
+            cryptocurrencyCode: "shiba-inu",
+            cryptocurrencyName: "Shiba Inu",
+            percentage: 20,
+          },
+          {
+            cryptocurrencyCode: "ethereum-classic",
+            cryptocurrencyName: "Ethereum Classic",
+            percentage: 30,
+          },
+          {
+            cryptocurrencyCode: "apecoin",
+            cryptocurrencyName: "ApeCoin",
+            percentage: 30,
+          },
+        ],
+        bundleID: "3",
+        bundleName: "Mu",
+        minimumHoldingPeriod: 12,
+        riskLevel: "Medium risk",
+        term: "Medium term",
+      },
+      {
+        bundleCryptocurrencies: [
+          {
+            cryptocurrencyCode: "chainlink",
+            cryptocurrencyName: "Chainlink",
+            percentage: 20,
+          },
+          {
+            cryptocurrencyCode: "decentraland",
+            cryptocurrencyName: "Decentraland",
+            percentage: 20,
+          },
+          {
+            cryptocurrencyCode: "quant-network",
+            cryptocurrencyName: "Quant",
+            percentage: 20,
+          },
+          {
+            cryptocurrencyCode: "wrapped-bitcoin",
+            cryptocurrencyName: "Wrapped Bitcoin",
+            percentage: 20,
+          },
+          {
+            cryptocurrencyCode: "usd-coin",
+            cryptocurrencyName: "USD Coin",
+            percentage: 20,
+          },
+        ],
+        bundleID: "4",
+        bundleName: "Omega",
+        minimumHoldingPeriod: 12,
+        riskLevel: "Medium risk",
+        term: "Medium term",
+      },
+      {
+        bundleCryptocurrencies: [
+          {
+            cryptocurrencyCode: "dai",
+            cryptocurrencyName: "Dai",
+            percentage: 20,
+          },
+          {
+            cryptocurrencyCode: "binancecoin",
+            cryptocurrencyName: "BNB",
+            percentage: 20,
+          },
+          {
+            cryptocurrencyCode: "solana",
+            cryptocurrencyName: "Solana",
+            percentage: 20,
+          },
+        ],
+        bundleID: "5",
+        bundleName: "Pi",
+        minimumHoldingPeriod: 18,
+        riskLevel: "Medium risk",
+        term: "Long term",
+      },
+      {
+        bundleCryptocurrencies: [
+          {
+            cryptocurrencyCode: "algorand",
+            cryptocurrencyName: "Algorand",
+            percentage: 20,
+          },
+          {
+            cryptocurrencyCode: "binance-usd",
+            cryptocurrencyName: "Binance USD",
+            percentage: 20,
+          },
+          {
+            cryptocurrencyCode: "flow",
+            cryptocurrencyName: "Flow",
+            percentage: 20,
+          },
+          {
+            cryptocurrencyCode: "filecoin",
+            cryptocurrencyName: "Filecoin",
+            percentage: 20,
+          },
+          {
+            cryptocurrencyCode: "polkadot",
+            cryptocurrencyName: "Polkadot",
+            percentage: 20,
+          },
+        ],
+        bundleID: "6",
+        bundleName: "Sigma",
+        minimumHoldingPeriod: 18,
+        riskLevel: "High risk",
+        term: "Long term",
+      },
+    ],
+    status: {
+      statusCode: "SUCCESS",
+      statusMessage: "All available bundles",
+    },
+  };
+
   useEffect(() => {
-    getAllBundles()
-      .then((res) => setBundles(res.data.availableBundles))
-      .then((res) => setIsLoading(false))
-      .catch((error) => console.error(error));
+    setBundles(bundleData.availableBundles)
+    setIsLoading(false)
+    // getAllBundles()
+    //   .then((res) => setBundles(res.data.availableBundles))
+    //   .then((res) => setIsLoading(false))
+    //   .catch((error) => console.error(error));
   }, []);
 
   if (isLoading) {
