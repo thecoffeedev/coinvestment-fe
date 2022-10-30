@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { userSignUp } from "../../apis/user";
 import PageCover from "../../assets/login-cover.png";
 import Logo from "../../assets/logo.svg";
+import { Toastify } from "../../utils/Toast";
 import "./index.css";
 
 function Register() {
@@ -13,7 +14,14 @@ function Register() {
   const handleSubmit = (user) => {
     console.log("user:::", user);
     userSignUp(user)
-      .then((res) => console.log(res))
+      .then((res) => {
+        if (res.data.status.statusCode === "FAILURE") {
+          Toastify("error", res.data.status.statusMessage);
+        } else {
+          Toastify("success", "User Registered Successfully. Please Login.")
+          navigate("/login")
+        }
+      })
       .catch((err) => console.log(err));
   };
 
