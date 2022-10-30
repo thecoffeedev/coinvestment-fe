@@ -43,7 +43,7 @@ function Account() {
             <div className="grid place-items-center h-full w-full">
               <HashLoader color="#5050ff" size={86} />
             </div>
-          ) : isLoadingWallets === false && walletsData.length === 0 ? (
+          ) : isLoadingWallets === false && walletsData?.length === 0 ? (
             <div className="grid place-items-center h-full w-full">
               <h1 className="text-xl text-center">
                 You have bought no Wallets. Please continue{" "}
@@ -70,7 +70,7 @@ function Account() {
             <div className="grid place-items-center h-full w-full">
               <HashLoader color="#5050ff" size={86} />
             </div>
-          ) : isLoadingBundles === false && bundlesData.length === 0 ? (
+          ) : isLoadingBundles === false && bundlesData?.length === 0 ? (
             <div className="grid place-items-center h-full w-full">
               <h1 className="text-xl text-center">
                 You have bought no Bundles. Please continue{" "}
