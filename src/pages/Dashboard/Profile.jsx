@@ -6,7 +6,7 @@ import {
   changeUserEmail,
   changeUserPassword,
   getUserData,
-  userLogout,
+  userLogout
 } from "../../apis/user";
 import ProfilePicture from "../../assets/defaultProfile.png";
 import Modal from "../../components/Modal/Modal";
@@ -63,9 +63,13 @@ function Profile() {
       currentPassword: emailChangeObj.password,
       newEmailAddress: emailChangeObj.email1,
     }).then((res) => {
-      Toastify("success", res.data.status.statusMessage);
-      setChangeEmailModal(false);
-      getUserData().then((res) => setUser(res.data));
+      if (res.data.status.statusCode === "FAILURE") {
+        Toastify("error", res.data.status.statusMessage);
+      } else {
+        Toastify("success", res.data.status.statusMessage);
+        setChangeEmailModal(false);
+        getUserData().then((res) => setUser(res.data));
+      }
     });
     setDisableChangeEmailBtn(false);
   };
@@ -87,12 +91,16 @@ function Profile() {
       newPassword: passwordChangeObj.newPassword1,
     })
       .then((res) => {
-        Toastify("success", res.data.status.statusMessage);
-        setChangePasswordModal(false);
-        userLogout().then((res) => {
-          localStorage.clear();
-          navigate("/login");
-        });
+        if (res.data.status.statusCode === "FAILURE") {
+          Toastify("error", res.data.status.statusMessage);
+        } else {
+          Toastify("success", res.data.status.statusMessage);
+          setChangePasswordModal(false);
+          userLogout().then((res) => {
+            localStorage.clear();
+            navigate("/login");
+          });
+        }
       })
       .catch((err) => console.log(err));
     setDisableChangePasswordBtn(false);

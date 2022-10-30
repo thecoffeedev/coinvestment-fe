@@ -38,7 +38,7 @@ const Coin = (props) => {
     buyWallet({
       initialBalance: buyObject.amount / coin.market_data.current_price.gbp ,
       cryptocurrencyCode: coin.id,
-      holdingPeriod: buyObject.minHoldingPeriod,
+      holdingPeriod: parseInt(buyObject.minHoldingPeriod),
       initialRate: coin.market_data.current_price.gbp,
       amount: buyObject.amount,
       cardNumber: buyObject.cardNumber,
