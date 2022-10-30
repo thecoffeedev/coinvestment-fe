@@ -31,7 +31,7 @@ const Hero = (props) => {
             <a className="opacity-80 hover:opacity-100" href="/">
               <Link to="faq" smooth={true} offset={0} duration={1000}>FAQ</Link>
             </a>
-            {props.isLoggedIn ? 
+            {props.isLoggedIn && localStorage.getItem("$AUTH_TOKEN") ? 
             <button
             className="border border-white px-3 rounded-md hover:bg-white hover:text-primaryPurple font-semibold   shadow-xl hover:shadow-none py-1"
             onClick={() => navigate("/db/crypto")}
