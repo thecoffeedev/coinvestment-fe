@@ -55,7 +55,10 @@ function Login() {
             width="56px"
             // className="border-primaryPurple border-2 border-opacity-60 rounded-lg"
           />
-          <h1 className="title-coin font-bold my-auto text-primaryDark">
+          <h1
+            data-testid="companyTitle"
+            className="title-coin font-bold my-auto text-primaryDark"
+          >
             COINVESTMENT
           </h1>
         </div>
@@ -64,6 +67,7 @@ function Login() {
             Login to your account
           </h1>
           <input
+            data-testid="emailInput"
             type="email"
             placeholder="Email"
             onChange={(e) => setUser({ ...user, emailAddress: e.target.value })}
@@ -76,6 +80,7 @@ function Login() {
             Please provide a valid email address.
           </p>
           <input
+            data-testid="passwordInput"
             type="password"
             placeholder="Password"
             onChange={(e) => setUser({ ...user, password: e.target.value })}

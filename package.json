@@ -3,9 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "jest": {
+    "testMatch": [
+      "<rootDir>/src/**/*.test.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
+    ]
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "test": "react-scripts test --watchAll=false",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -16,17 +23,21 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "react-router-dom": "^6.4.1",
+    "react-scripts": "^5.0.1",
     "react-scroll": "^1.8.7",
     "react-spinners": "^0.13.6",
     "react-toastify": "^9.0.8",
     "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.1.0",
     "autoprefixer": "^10.4.12",
     "dotenv": "^16.0.2",
+    "jest-dom": "^4.0.0",
     "postcss": "^8.4.17",
     "tailwindcss": "^3.1.8",
     "vite": "^3.1.0"

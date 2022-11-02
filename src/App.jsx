@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,7 +21,7 @@ function App() {
       <UserProvider>
         <Router>
           <Routes>
-            {/* <Route element={<PrivateRoutes />}> */}
+            <Route element={<PrivateRoutes />}>
             <Route element={<Crypto />} path="/db/crypto" />
             <Route element={<Coin />} path="/db/crypto/:coinId" />
             <Route element={<Bundles />} path="/db/bundles" />
@@ -37,7 +36,7 @@ function App() {
               element={<BundlePage />}
               path="/db/account/bundle/:bundleAddress"
             />
-            {/* </Route> */}
+            </Route>
             <Route element={<Landing />} path="/" exact />
             <Route element={<Login />} path="/login" />
             <Route element={<Register />} path="/register" />
