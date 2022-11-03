@@ -110,7 +110,7 @@ function Profile() {
     <Dashboard>
       <div className="w-full max-w-3xl p-8 mx-auto text-center text-gray-700 border border-blue-200 rounded-lg shadow-lg shadow-blue-100">
         <div className="w-full">
-          <h1 className="text-4xl font-bold">Profile</h1>
+          <h1 data-testid="pageHeading" className="text-4xl font-bold">Profile</h1>
           <img
             src={ProfilePicture}
             alt="profile picture"
