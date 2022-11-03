@@ -9,15 +9,15 @@ import { useNavigate } from 'react-router-dom'
 const Buy = () => {
     const navigate = useNavigate()
     return (
-        <div className='py-16 bg-primaryPurple text-primaryLight'>
+        <div data-testid="buyContainer" className='py-16 bg-primaryPurple text-primaryLight'>
             <div className=' mx-auto max-w-6xl'>
                 <h1 className='font-bold text-4xl text-white mt-6 mb-20 text-center'>Buy your first Coin bundle with these simple steps</h1>
                 <div className='grid grid-cols-3'>
-                    <BuyCard title='Create your acoount' img={account} />
-                    <BuyCard title='Get verified' img={verified} />
-                    <BuyCard title='Buy bundles using your credit/debit card' img={BuyMe} />
+                    <BuyCard data_testid="buyCard1" title='Create your acoount' img={account} />
+                    <BuyCard data_testid="buyCard2" title='Get verified' img={verified} />
+                    <BuyCard data_testid="buyCard3" title='Buy bundles using your credit/debit card' img={BuyMe} />
                 </div>
-                <div className='text-center p-4'>
+                <div data-testid="buyButton" className='text-center p-4'>
                     <Button onCLick={() => { navigate("/db/crypto") }} text='Start Investing' color='bg-[#008CFF]' />
                 </div>
             </div>
