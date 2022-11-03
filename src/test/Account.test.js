@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import Account from "../pages/Dashboard/Account";
-import { RouterWrapper } from "../utils/test";
+import { RouterWrapper } from "../utils/test-utils";
 
 test("heading of wallet component is Wallets", () => {
   render(<Account />, { wrapper: RouterWrapper });

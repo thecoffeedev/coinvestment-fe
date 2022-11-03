@@ -1,14 +1,14 @@
 import { render, screen } from "@testing-library/react"
-import Landing from "../pages/Landing"
-import Hero from "../components/Hero"
 import Bundles from "../components/Bundles"
-import Info from "../components/Info"
-import { RouterWrapper } from "../utils/test"
-import Points from "../components/Points"
 import Buy from "../components/Buy"
-import SupportCoins from "../components/SupportCoins"
 import Faq from "../components/Faq"
 import Footer from "../components/Footer"
+import Hero from "../components/Hero"
+import Info from "../components/Info"
+import Points from "../components/Points"
+import SupportCoins from "../components/SupportCoins"
+import Landing from "../pages/Landing"
+import { RouterWrapper } from "../utils/test-utils"
 
 test('loader test', () => {
     render(<Landing />, { wrapper: RouterWrapper })
