@@ -17,7 +17,7 @@ function Landing() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
-    if (contextUser.authToken){
+    if (contextUser.authToken) {
       setIsLoggedIn(true)
     }
     setTimeout(() => {
@@ -28,14 +28,14 @@ function Landing() {
 
   if (isLoading) {
     return (
-      <div className="grid place-items-center h-[100vh] w-[100vw]">
+      <div data-testid="loader" className="grid place-items-center h-[100vh] w-[100vw]">
         <HashLoader color="#5050ff" size={74} />
       </div>
     );
   }
 
   return (
-    <div>
+    <div data-testid="heroSection">
       <Hero isLoggedIn={isLoggedIn} />
       <Bundles />
       <Info />
