@@ -87,6 +87,7 @@ function Login() {
             className="mb-4  block w-full px-3 py-2 bg-white peer border-0 border-b-2  border-primaryDark rounded-md text-sm shadow-sm placeholder-slate-400  focus:outline-none focus:border-primaryDark focus:ring-1 focus:ring-primaryDark"
           />
           <button
+            data-testid="button-login"
             className="bg-primaryDark text-primaryLight rounded-full mt-2 h-12 w-full text-xl"
             onClick={() => handleSubmit(user)}
           >
@@ -94,7 +95,7 @@ function Login() {
           </button>
           <p>
             Don't have an account yet?{" "}
-            <button onClick={() => navigate("/register")}>Register</button>
+            <button data-testid="registerBtn" onClick={() => navigate("/register")}>Register</button>
           </p>
         </div>
       </div>

@@ -17,7 +17,6 @@ function Header() {
   useEffect(() => {
     const page = location.pathname.split("/")[2];
     setCurrentPage(page);
-    console.log(contextUser);
     Axios.defaults.headers.common = {
       Authorization: `Bearer ${contextUser.authToken}`,
     };

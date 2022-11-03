@@ -17,7 +17,6 @@ function Account() {
   const [isLoadingBundles, setIsLoadingBundles] = useState(true);
 
   const walletsRequest = () => {
-    console.log("authToken:::", contextUser.authToken);
     getWallets().then((res) => {
       setWalletsData(res.data.wallet || []);
       setIsLoadingWallets(false);
@@ -36,7 +35,7 @@ function Account() {
     <Dashboard>
       <div className="flex flex-row gap-4">
         <div className="flex flex-col py-2 px-4  w-1/2 border-violet-300  shadow-2xl shadow-violet-200 border-2 rounded-xl">
-          <h1 className="text-3xl font-bold">Wallets</h1>
+          <h1 data-testid="walletHeading" className="text-3xl font-bold">Wallets</h1>
           <p className="text-sm mb-2">Your active wallets are listed here.</p>
           <hr className="bg-violet-300" />
           {isLoadingWallets === true ? (
@@ -63,7 +62,7 @@ function Account() {
           )}
         </div>
         <div className="flex flex-col py-2 px-4 w-1/2  border-violet-300  shadow-2xl shadow-violet-200 border-2  rounded-xl">
-          <h1 className="text-3xl font-bold">Bundles</h1>
+          <h1 data-testid="bundlesHeading" className="text-3xl font-bold">Bundles</h1>
           <p className="text-sm mb-2">Your active wallets are listed here.</p>
           <hr />
           {isLoadingBundles === true ? (
