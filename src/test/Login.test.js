@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import Login from "../pages/Login";
-import { RouterWrapper } from "../utils/test";
+import { RouterWrapper } from "../utils/test-utils";
 
 test("company title is COINVESTMENT", () => {
   render(<Login />, { wrapper: RouterWrapper });
