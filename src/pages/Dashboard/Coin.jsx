@@ -36,7 +36,7 @@ const Coin = (props) => {
 
   const handleBuyCoin = () => {
     buyWallet({
-      initialBalance: buyObject.amount / coin.market_data.current_price.gbp ,
+      initialBalance: buyObject.amount / coin.market_data.current_price.gbp,
       cryptocurrencyCode: coin.id,
       holdingPeriod: parseInt(buyObject.minHoldingPeriod),
       initialRate: coin.market_data.current_price.gbp,
@@ -47,7 +47,7 @@ const Coin = (props) => {
       if (
         res.data.status.statusCode === "FAILURE" &&
         res.data.status.statusMessage ===
-          "Initial Balance must be greater than zero"
+        "Initial Balance must be greater than zero"
       ) {
         Toastify("error", "Please enter a valid Units for purchase.");
       } else if (res.data.status.statusCode === "FAILURE") {
@@ -99,7 +99,7 @@ const Coin = (props) => {
           <div className="grid w-full gap-8 p-2 px-8 text-center sm:grid-cols-2">
             <div className="flex justify-center sm:justify-start">
               {coin.image ? (
-                <img src={coin.image.small} alt={coin.name} />
+                <img src={coin.image.small} alt={coin.name} width="50px" height="50px" />
               ) : null}
               <p className="p-3 font-bold uppercase ">{coin.name}</p>
               <p className="py-3 uppercase">({coin.symbol}/GBP)</p>
@@ -269,9 +269,9 @@ const Coin = (props) => {
           <p>
             {buyObject.amount
               ? Math.round(
-                  (buyObject.amount / coin?.market_data?.current_price?.gbp  ) *
-                    10000
-                ) / 10000
+                (buyObject.amount / coin?.market_data?.current_price?.gbp) *
+                10000
+              ) / 10000
               : 0}
           </p>
           <p>Holding period (In Months) :</p>
