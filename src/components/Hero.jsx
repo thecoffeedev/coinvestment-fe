@@ -50,7 +50,7 @@ const Hero = (props) => {
           </div>
         </div>
         <div className="flex justify-center items-center h-[60%]">
-          <img data-testid="heroImage" className="w-[30rem] h-min" src={macImg} alt="macImg" />
+          <img data-testid="heroImage" className="w-[34rem] h-min" src={macImg} alt="macImg" />
         </div>
         <div className="text-center space-y-3">
           <h1 data-testid="tagline1" className="text-4xl font-extrabold">Invest in Bundles,</h1>
