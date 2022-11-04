@@ -7,3 +7,19 @@ export const userSignUp = async (user) => {
 export const userSignIn = async (user) => {
   return await Axios.post("/sign-in", user);
 };
+
+export const userLogout = async () => {
+  return await Axios.get("/sign-out");
+};
+
+export const getUserData = async () => {
+  return await Axios.get("/profile/customer-details");
+};
+
+export const changeUserEmail = async (user) => {
+  return await Axios.post("/profile/change-emailaddress", user);
+};
+
+export const changeUserPassword = async (passwordObject) => {
+  return await Axios.post("/profile/change-password", passwordObject);
+};

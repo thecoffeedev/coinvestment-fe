@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { userSignUp } from "../../apis/user";
 import PageCover from "../../assets/login-cover.png";
 import Logo from "../../assets/logo.svg";
+import { Toastify } from "../../utils/Toast";
 import "./index.css";
 
 function Register() {
@@ -13,7 +14,14 @@ function Register() {
   const handleSubmit = (user) => {
     console.log("user:::", user);
     userSignUp(user)
-      .then((res) => console.log(res))
+      .then((res) => {
+        if (res.data.status.statusCode === "FAILURE") {
+          Toastify("error", res.data.status.statusMessage);
+        } else {
+          Toastify("success", "User Registered Successfully. Please Login.")
+          navigate("/login")
+        }
+      })
       .catch((err) => console.log(err));
   };
 
@@ -30,7 +38,7 @@ function Register() {
             width="56px"
             // className="border-primaryPurple border-2 border-opacity-60 rounded-lg"
           />
-          <h1 className="title-coin font-bold my-auto text-primaryDark">
+          <h1 data-testid="companyTitle" className="title-coin font-bold my-auto text-primaryDark">
             COINVESTMENT
           </h1>
         </div>
@@ -45,6 +53,7 @@ function Register() {
     focus:outline-none focus:border-primaryDark focus:ring-1 focus:ring-primaryDark"
           />
           <input
+          data-testid="emailInput"
             type="email"
             placeholder="Email"
             onChange={(e) => setUser({ ...user, email: e.target.value })}
@@ -57,12 +66,14 @@ function Register() {
             Please provide a valid email address.
           </p>
           <input
+          data-testid="passwordInput"
             type="password"
             placeholder="Password"
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             className="mb-4  block w-full px-3 py-2 bg-white peer border-0 border-b-2  border-primaryDark rounded-md text-sm shadow-sm placeholder-slate-400  focus:outline-none focus:border-primaryDark focus:ring-1 focus:ring-primaryDark"
           />
           <button
+          data-testid="registerBtn"
             className="bg-primaryDark text-primaryLight rounded-full mt-2 h-12 w-full text-xl"
             onClick={() => handleSubmit(user)}
           >
@@ -70,7 +81,7 @@ function Register() {
           </button>
           <p>
             Already have an account?{" "}
-            <button onClick={() => navigate("/login")}>Log in</button>
+            <button data-testid="loginBtn" onClick={() => navigate("/login")}>Log in</button>
           </p>
         </div>
       </div>
